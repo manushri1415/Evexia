@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal - MedAgg</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">&larr; Back to Home</a>
+            <h1>Patient Portal</h1>
+            <p class="subtitle">Manage and share your medical records</p>
+        </header>
+
+        <div class="disclaimer-banner">
+            {{ disclaimer }}
+        </div>
+
+        <main>
+            <section class="card" id="data-input-section">
+                <h2>Step 1: Load Your Medical Data</h2>
+                
+                <div class="form-group">
+                    <label for="patient-name">Your Name</label>
+                    <input type="text" id="patient-name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Hospitals (Arizona)</label>
+                    <div class="checkbox-group">
+                        {% for hospital in hospitals %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="hospitals" value="{{ hospital }}" checked>
+                            {{ hospital }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Data Categories</label>
+                    <div class="checkbox-group">
+                        {% for category in categories %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="categories" value="{{ category }}" checked>
+                            {{ category | capitalize }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button id="load-sample-btn" class="btn btn-primary">Load Sample Data</button>
+                    <span class="or-divider">OR</span>
+                    <div class="upload-group">
+                        <input type="file" id="file-upload" accept=".json" hidden>
+                        <button id="upload-btn" class="btn btn-secondary">Upload JSON File</button>
+                    </div>
+                </div>
+
+                <div id="load-status" class="status-message" style="display: none;"></div>
+            </section>
+
+            <section class="card" id="summary-section" style="display: none;">
+                <h2>Step 2: Generate AI Summary</h2>
+                <p>Generate an AI-powered analysis of your medical records.</p>
+                
+                <button id="generate-summary-btn" class="btn btn-primary">Generate Summary</button>
+                
+                <div id="summary-loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing your medical records...</p>
+                </div>
+
+                <div id="summary-results" style="display: none;">
+                    <div class="summary-card clinician-summary">
+                        <h3>Clinical Summary</h3>
+                        <p class="summary-note">For healthcare providers</p>
+                        <pre id="clinician-summary-text"></pre>
+                    </div>
+
+                    <div class="summary-card patient-summary">
+                        <h3>Your Health Summary</h3>
+                        <p class="summary-note">In plain language</p>
+                        <p id="patient-summary-text"></p>
+                    </div>
+
+                    <div class="summary-card anomalies-section" id="anomalies-container" style="display: none;">
+                        <h3>Flagged Items</h3>
+                        <p class="summary-note">Items that may need attention</p>
+                        <div id="anomalies-list"></div>
+                    </div>
+
+                    <div class="disclaimer-inline">
+                        <strong>Important:</strong> {{ disclaimer }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="charts-section" style="display: none;">
+                <h2>Health Metrics Dashboard</h2>
+                
+                <div class="charts-grid">
+                    <div class="chart-container">
+                        <h3>BMI Over Time</h3>
+                        <canvas id="bmi-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>Cholesterol Over Time</h3>
+                        <canvas id="cholesterol-chart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>A1C Over Time</h3>
+                        <canvas id="a1c-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="card" id="share-section" style="display: none;">
+                <h2>Step 3: Share With Your Provider</h2>
+                
+                <div class="form-group">
+                    <label>Select Data to Share</label>
+                    <div class="checkbox-group" id="share-scope">
+                        {% for category in categories %}
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="share-categories" value="{{ category }}" checked>
+                            {{ category | capitalize }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="expiry-hours">Token Expiry</label>
+                    <select id="expiry-hours">
+                        <option value="1">1 hour</option>
+                        <option value="24" selected>24 hours</option>
+                        <option value="72">3 days</option>
+                        <option value="168">1 week</option>
+                    </select>
+                </div>
+
+                <button id="create-token-btn" class="btn btn-primary">Create Share Token</button>
+
+                <div id="token-result" class="token-display" style="display: none;">
+                    <h4>Your Share Token</h4>
+                    <p>Give this token to your healthcare provider:</p>
+                    <div class="token-box">
+                        <code id="share-token"></code>
+                        <button id="copy-token-btn" class="btn-small">Copy</button>
+                    </div>
+                    <p class="token-expiry">Expires: <span id="token-expiry"></span></p>
+                    <p class="token-scope">Shared categories: <span id="token-scope"></span></p>
+                </div>
+            </section>
+
+            <section class="card" id="access-logs-section" style="display: none;">
+                <h2>Access Log</h2>
+                <p>See who has viewed your shared data</p>
+                
+                <table id="access-logs-table" class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date/Time</th>
+                            <th>Viewer IP</th>
+                            <th>Scope Accessed</th>
+                        </tr>
+                    </thead>
+                    <tbody id="access-logs-body">
+                    </tbody>
+                </table>
+                <p id="no-access-logs" style="display: none;">No access logs yet.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p class="footer-disclaimer">{{ disclaimer }}</p>
+        </footer>
+    </div>
+
+    <script src="/static/charts.js"></script>
+    <script>
+        let currentPatientId = null;
+        let chartData = null;
+
+        document.getElementById('load-sample-btn').addEventListener('click', loadSampleData);
+        document.getElementById('upload-btn').addEventListener('click', () => document.getElementById('file-upload').click());
+        document.getElementById('file-upload').addEventListener('change', uploadFile);
+        document.getElementById('generate-summary-btn').addEventListener('click', generateSummary);
+        document.getElementById('create-token-btn').addEventListener('click', createToken);
+        document.getElementById('copy-token-btn').addEventListener('click', copyToken);
+
+        document.getElementById('patient-name').addEventListener('input', checkExistingPatient);
+
+        let debounceTimer;
+        async function checkExistingPatient() {
+            const name = document.getElementById('patient-name').value.trim();
+            if (!name) return;
+            
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/patient/lookup?name=${encodeURIComponent(name)}`);
+                    const data = await response.json();
+                    
+                    if (data.success && data.patient) {
+                        currentPatientId = data.patient.id;
+                        if (data.records && data.records.length > 0) {
+                            showStatus('Found existing records for ' + name, 'success');
+                            showDataSections(data);
+                        }
+                    }
+                } catch (error) {
+                    console.log('Patient lookup failed:', error);
+                }
+            }, 500);
+        }
+
+        async function loadSampleData() {
+            const patientName = document.getElementById('patient-name').value.trim();
+            if (!patientName) {
+                showStatus('Please enter your name', 'error');
+                return;
+            }
+
+            const hospitals = Array.from(document.querySelectorAll('input[name="hospitals"]:checked')).map(cb => cb.value);
+            const categories = Array.from(document.querySelectorAll('input[name="categories"]:checked')).map(cb => cb.value);
+
+            if (hospitals.length === 0 || categories.length === 0) {
+                showStatus('Please select at least one hospital and one category', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('patient_name', patientName);
+            hospitals.forEach(h => formData.append('hospitals', h));
+            categories.forEach(c => formData.append('categories', c));
+
+            try {
+                showStatus('Loading sample data...', 'info');
+                const response = await fetch('/api/load-sample-data', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentPatientId = data.patient_id;
+                    showStatus(data.message, 'success');
+                    await loadPatientData();
+                } else {
+                    showStatus(data.detail || 'Failed to load data', 'error');
+                }
+            } catch (error) {
+                showStatus('Error loading data: ' + error.message, 'error');
+            }
+        }
+
+        async function uploadFile() {
+            const patientName = document.getElementById('patient-name').value.trim();
+            if (!patientName) {
+                showStatus('Please enter your name first', 'error');
+                return;
+            }
+
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('patient_name', patientName);
+            formData.append('file', file);
+
+            try {
+                showStatus('Uploading file...', 'info');
+                const response = await fetch('/api/upload-data', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentPatientId = data.patient_id;
+                    showStatus(data.message, 'success');
+                    await loadPatientData();
+                } else {
+                    showStatus(data.detail || 'Failed to upload', 'error');
+                }
+            } catch (error) {
+                showStatus('Error uploading: ' + error.message, 'error');
+            }
+        }
+
+        async function loadPatientData() {
+            if (!currentPatientId) return;
+
+            try {
+                const response = await fetch(`/api/patient/${currentPatientId}/records`);
+                const data = await response.json();
+                
+                chartData = data.chart_data;
+                showDataSections(data);
+            } catch (error) {
+                console.error('Error loading patient data:', error);
+            }
+        }
+
+        function showDataSections(data) {
+            document.getElementById('summary-section').style.display = 'block';
+            document.getElementById('charts-section').style.display = 'block';
+            document.getElementById('share-section').style.display = 'block';
+            document.getElementById('access-logs-section').style.display = 'block';
+
+            if (data.chart_data) {
+                chartData = data.chart_data;
+                renderCharts(chartData);
+            }
+
+            if (data.summary) {
+                displaySummary(data.summary);
+            }
+
+            if (data.access_logs) {
+                displayAccessLogs(data.access_logs);
+            }
+        }
+
+        async function generateSummary() {
+            if (!currentPatientId) {
+                showStatus('Please load data first', 'error');
+                return;
+            }
+
+            document.getElementById('summary-loading').style.display = 'block';
+            document.getElementById('summary-results').style.display = 'none';
+
+            try {
+                const response = await fetch(`/api/patient/${currentPatientId}/generate-summary`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+
+                document.getElementById('summary-loading').style.display = 'none';
+
+                if (data.success) {
+                    displaySummary(data);
+                } else {
+                    showStatus(data.error || 'Failed to generate summary', 'error');
+                }
+            } catch (error) {
+                document.getElementById('summary-loading').style.display = 'none';
+                showStatus('Error generating summary: ' + error.message, 'error');
+            }
+        }
+
+        function displaySummary(data) {
+            document.getElementById('summary-results').style.display = 'block';
+            document.getElementById('clinician-summary-text').textContent = data.clinician_summary || 'No clinical summary available';
+            document.getElementById('patient-summary-text').textContent = data.patient_summary || 'No patient summary available';
+
+            const anomaliesContainer = document.getElementById('anomalies-container');
+            const anomaliesList = document.getElementById('anomalies-list');
+            
+            if (data.anomalies && data.anomalies.length > 0) {
+                anomaliesContainer.style.display = 'block';
+                anomaliesList.innerHTML = data.anomalies.map(a => `
+                    <div class="anomaly-item severity-${a.severity}">
+                        <span class="anomaly-type">${a.type}</span>
+                        <span class="anomaly-severity">${a.severity}</span>
+                        <p>${a.description}</p>
+                    </div>
+                `).join('');
+            } else {
+                anomaliesContainer.style.display = 'none';
+            }
+        }
+
+        async function createToken() {
+            if (!currentPatientId) {
+                showStatus('Please load data first', 'error');
+                return;
+            }
+
+            const scope = Array.from(document.querySelectorAll('input[name="share-categories"]:checked')).map(cb => cb.value);
+            const expiryHours = document.getElementById('expiry-hours').value;
+
+            const formData = new FormData();
+            scope.forEach(s => formData.append('scope', s));
+            formData.append('expiry_hours', expiryHours);
+
+            try {
+                const response = await fetch(`/api/patient/${currentPatientId}/create-token`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('token-result').style.display = 'block';
+                    document.getElementById('share-token').textContent = data.token;
+                    document.getElementById('token-expiry').textContent = new Date(data.expires_at).toLocaleString();
+                    document.getElementById('token-scope').textContent = data.scope.join(', ');
+                    
+                    loadAccessLogs();
+                }
+            } catch (error) {
+                showStatus('Error creating token: ' + error.message, 'error');
+            }
+        }
+
+        function copyToken() {
+            const token = document.getElementById('share-token').textContent;
+            navigator.clipboard.writeText(token).then(() => {
+                document.getElementById('copy-token-btn').textContent = 'Copied!';
+                setTimeout(() => {
+                    document.getElementById('copy-token-btn').textContent = 'Copy';
+                }, 2000);
+            });
+        }
+
+        async function loadAccessLogs() {
+            if (!currentPatientId) return;
+
+            try {
+                const response = await fetch(`/api/patient/${currentPatientId}/access-logs`);
+                const data = await response.json();
+                
+                displayAccessLogs(data.logs || []);
+            } catch (error) {
+                console.error('Error loading access logs:', error);
+            }
+        }
+
+        function displayAccessLogs(logs) {
+            const tbody = document.getElementById('access-logs-body');
+            const noLogs = document.getElementById('no-access-logs');
+            
+            if (logs.length === 0) {
+                tbody.innerHTML = '';
+                noLogs.style.display = 'block';
+            } else {
+                noLogs.style.display = 'none';
+                tbody.innerHTML = logs.map(log => `
+                    <tr>
+                        <td>${new Date(log.accessed_at).toLocaleString()}</td>
+                        <td>${log.viewer_ip}</td>
+                        <td>${log.scope.join(', ')}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('load-status');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + type;
+            statusEl.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

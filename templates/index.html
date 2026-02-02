@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedAgg - Patient Medical Data Aggregator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MedAgg</h1>
+            <p class="subtitle">Patient Medical Data Aggregator</p>
+            <p class="tagline">Securely aggregate and share your medical records from Arizona hospitals</p>
+        </header>
+
+        <div class="disclaimer-banner">
+            {{ disclaimer }}
+        </div>
+
+        <main class="landing-content">
+            <div class="role-cards">
+                <div class="role-card">
+                    <div class="role-icon">&#128100;</div>
+                    <h2>Patient Portal</h2>
+                    <p>Upload or load sample medical data from multiple hospitals. Generate AI-powered summaries and share securely with your healthcare providers.</p>
+                    <ul class="features-list">
+                        <li>Load data from Hospital A, B, and C (Arizona)</li>
+                        <li>View AI-generated health summaries</li>
+                        <li>Interactive health metric charts</li>
+                        <li>Create secure share tokens</li>
+                        <li>Track who views your data</li>
+                    </ul>
+                    <a href="/patient" class="btn btn-primary">Enter as Patient</a>
+                </div>
+
+                <div class="role-card">
+                    <div class="role-icon">&#128105;&#8205;&#9877;&#65039;</div>
+                    <h2>Provider Portal</h2>
+                    <p>Access patient records securely using a share token. View summaries, health metrics, and anomaly flags within your authorized scope.</p>
+                    <ul class="features-list">
+                        <li>Enter patient-provided share token</li>
+                        <li>View scoped medical records</li>
+                        <li>Review AI summaries and anomalies</li>
+                        <li>Access is logged for patient transparency</li>
+                    </ul>
+                    <a href="/provider" class="btn btn-secondary">Enter as Provider</a>
+                </div>
+            </div>
+
+            <section class="info-section">
+                <h3>About This Prototype</h3>
+                <p>MedAgg is a hackathon prototype demonstrating patient-controlled medical data aggregation. 
+                   It allows patients to consolidate records from multiple Arizona hospitals, generate 
+                   AI-powered summaries, and securely share specific data categories with healthcare providers.</p>
+                
+                <div class="security-notes">
+                    <h4>Security & Privacy Features</h4>
+                    <ul>
+                        <li><strong>Token-based sharing:</strong> Patients control access with expiring tokens</li>
+                        <li><strong>Scoped access:</strong> Providers only see authorized data categories</li>
+                        <li><strong>Access logging:</strong> All provider access is recorded</li>
+                        <li><strong>Data integrity:</strong> AI can flag but never delete your data</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p class="footer-disclaimer">{{ disclaimer }}</p>
+            <p class="copyright">MedAgg Prototype - For demonstration purposes only</p>
+        </footer>
+    </div>
+</body>
+</html>
