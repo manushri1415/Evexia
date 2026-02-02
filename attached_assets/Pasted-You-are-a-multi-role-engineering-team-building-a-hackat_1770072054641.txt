@@ -1,0 +1,170 @@
+You are a multi-role engineering team building a hackathon prototype in one Replit project.
+
+Roles
+
+Role 1 — Product Manager (PM):
+Define the MVP scope and user flows for:
+
+Patient uploads/loads sample medical data from multiple hospitals (Arizona only)
+
+AI generates clinician + patient summaries and flags anomalies (cannot delete/exclude data)
+
+Patient creates a share token with scope + expiry
+
+Provider views the shared summary/dashboard via token
+
+Access logs are recorded and viewable by patient
+
+Role 2 — Solutions Architect:
+Design a simple, Replit-friendly architecture:
+
+Single FastAPI app serving HTML pages (Jinja2 templates) + JSON APIs
+
+SQLite database
+
+Local file storage for uploaded documents
+
+Chart.js for dashboard graphs
+
+Token-based sharing (no complex OAuth)
+
+Role 3 — Backend Engineer (Python/FastAPI):
+Implement:
+
+FastAPI server with routes/pages for Patient and Provider flows
+
+SQLite database initialization + CRUD
+
+Data ingestion: accept JSON upload OR load sample JSON from /sample_data/
+
+Normalize into a unified record schema in records.data_json
+
+Anomaly detection (simple rules): duplicates, missing dates, extreme outliers
+
+AI summarization endpoint that produces:
+
+clinician-ready summary (bullet points)
+
+patient-friendly explanation (plain language)
+
+anomalies list (JSON)
+Rules: AI may flag “bad data” but must not remove any data. Always include disclaimer: “Not medical advice. Verify with clinician.”
+
+Use OpenAI API key via OPENAI_API_KEY from Replit Secrets. If no key is set, gracefully fall back to a deterministic mock summary.
+
+Role 4 — Frontend Engineer (HTML/JS):
+Create simple clean pages using templates:
+
+/ landing page (Patient / Provider buttons)
+
+/patient page with:
+
+patient name input
+
+hospital selection checkboxes (Hospital A, B, C)
+
+category selection (labs, meds, vitals, encounters)
+
+upload JSON button + “Load Sample Data” button
+
+“Generate Summary” button
+
+display summaries + anomaly flags
+
+dashboard charts (BMI, cholesterol, A1C) using Chart.js
+
+“Create Share Token” button + show token + expiry
+
+access log table
+
+/provider page:
+
+token input
+
+display restricted view if valid
+
+Use minimal CSS (either simple CSS file or Tailwind CDN). Keep it Replit-compatible.
+
+Role 5 — Security/Compliance Reviewer (lightweight):
+Add practical safeguards appropriate for a prototype:
+
+Input validation on uploads (JSON only)
+
+Token generation uses secrets.token_urlsafe(32)
+
+Token expiry enforced
+
+Scope enforced (provider sees only allowed categories)
+
+Store access logs (timestamp + viewer IP)
+
+Add clear HIPAA/FTC-safe disclaimers everywhere:
+
+“Informational only, not medical advice.”
+
+“AI summaries may be inaccurate; verify original records.”
+
+Role 6 — QA Engineer:
+Provide:
+
+A small sample_data/ set with 2–3 JSON files that include:
+
+vitals with BMI over time
+
+labs with cholesterol and A1C
+
+medication history with dose changes and side effects
+
+encounter list
+
+A simple “happy path” manual test checklist in README.md.
+
+Deliverables to generate in the Replit project
+
+Create these files and ensure the app runs with the Replit Run button:
+
+main.py (FastAPI app, routes, API calls, templates)
+
+db.py (SQLite helpers + schema initialization)
+
+ai.py (OpenAI call + fallback mock summary)
+
+ingest.py (sample loader + normalization + anomaly detection)
+
+templates/ folder with:
+
+index.html, patient.html, provider.html
+
+static/ folder with:
+
+styles.css
+
+charts.js
+
+sample_data/ folder with 2–3 JSON sample hospital records
+
+README.md with:
+
+Setup instructions
+
+Where to put OPENAI_API_KEY
+
+Run command: uvicorn main:app --host 0.0.0.0 --port 3000
+
+Manual test checklist
+
+Implementation details / constraints
+
+Use FastAPI + Jinja2 templates.
+
+Use SQLite (app.db) stored in project root.
+
+Uploads saved to /uploads/.
+
+All pages should work without external services.
+
+If AI key is missing, still allow the app to demo end-to-end using mock summaries.
+
+Focus on clarity and stability over perfect UI.
+
+Now implement everything and output the complete project structure and code.
