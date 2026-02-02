@@ -1,0 +1,136 @@
+{
+  "hospital": "Hospital A",
+  "hospital_location": "Phoenix, Arizona",
+  "patient_id": "DEMO-001",
+  "records": {
+    "vitals": {
+      "entries": [
+        {
+          "date": "2024-01-15",
+          "blood_pressure": "128/82",
+          "heart_rate": 72,
+          "weight_lbs": 185,
+          "height_inches": 70,
+          "bmi": 26.5,
+          "temperature": 98.6,
+          "respiratory_rate": 16
+        },
+        {
+          "date": "2024-04-20",
+          "blood_pressure": "132/85",
+          "heart_rate": 75,
+          "weight_lbs": 190,
+          "height_inches": 70,
+          "bmi": 27.3,
+          "temperature": 98.4,
+          "respiratory_rate": 16
+        },
+        {
+          "date": "2024-07-10",
+          "blood_pressure": "130/84",
+          "heart_rate": 70,
+          "weight_lbs": 188,
+          "height_inches": 70,
+          "bmi": 27.0,
+          "temperature": 98.6,
+          "respiratory_rate": 15
+        },
+        {
+          "date": "2024-10-05",
+          "blood_pressure": "126/80",
+          "heart_rate": 68,
+          "weight_lbs": 182,
+          "height_inches": 70,
+          "bmi": 26.1,
+          "temperature": 98.5,
+          "respiratory_rate": 16
+        }
+      ]
+    },
+    "labs": {
+      "entries": [
+        {
+          "date": "2024-01-15",
+          "test_name": "Comprehensive Metabolic Panel",
+          "total_cholesterol": 215,
+          "ldl": 135,
+          "hdl": 48,
+          "triglycerides": 160,
+          "a1c": 6.2,
+          "fasting_glucose": 108,
+          "creatinine": 1.0,
+          "bun": 18
+        },
+        {
+          "date": "2024-07-10",
+          "test_name": "Lipid Panel + A1C",
+          "total_cholesterol": 198,
+          "ldl": 118,
+          "hdl": 52,
+          "triglycerides": 140,
+          "a1c": 5.9,
+          "fasting_glucose": 102
+        }
+      ]
+    },
+    "meds": {
+      "entries": [
+        {
+          "medication": "Lisinopril",
+          "dose": "10mg",
+          "frequency": "Once daily",
+          "start_date": "2023-06-01",
+          "prescriber": "Dr. Martinez",
+          "purpose": "Blood pressure management",
+          "side_effects_reported": []
+        },
+        {
+          "medication": "Atorvastatin",
+          "dose": "20mg",
+          "frequency": "Once daily at bedtime",
+          "start_date": "2024-01-20",
+          "prescriber": "Dr. Martinez",
+          "purpose": "Cholesterol management",
+          "side_effects_reported": ["Mild muscle aches (resolved)"]
+        },
+        {
+          "medication": "Metformin",
+          "dose": "500mg",
+          "frequency": "Twice daily",
+          "start_date": "2024-02-15",
+          "prescriber": "Dr. Chen",
+          "purpose": "Prediabetes management",
+          "side_effects_reported": ["GI upset (first 2 weeks)"]
+        }
+      ]
+    },
+    "encounters": {
+      "entries": [
+        {
+          "date": "2024-01-15",
+          "type": "Annual Physical",
+          "provider": "Dr. Martinez",
+          "department": "Internal Medicine",
+          "chief_complaint": "Annual wellness exam",
+          "notes": "Patient presents for routine annual physical. Discussed weight management and prediabetes risk."
+        },
+        {
+          "date": "2024-04-20",
+          "type": "Follow-up",
+          "provider": "Dr. Martinez",
+          "department": "Internal Medicine",
+          "chief_complaint": "Medication review",
+          "notes": "Follow-up for blood pressure and cholesterol medications. Patient tolerating well."
+        },
+        {
+          "date": "2024-07-10",
+          "type": "Lab Review",
+          "provider": "Dr. Chen",
+          "department": "Endocrinology",
+          "chief_complaint": "A1C monitoring",
+          "notes": "A1C improved from 6.2 to 5.9. Continue current regimen. Lifestyle modifications effective."
+        }
+      ]
+    }
+  }
+}

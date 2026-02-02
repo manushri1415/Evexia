@@ -1,0 +1,133 @@
+{
+  "hospital": "Hospital B",
+  "hospital_location": "Tucson, Arizona",
+  "patient_id": "DEMO-001",
+  "records": {
+    "vitals": {
+      "entries": [
+        {
+          "date": "2024-02-28",
+          "blood_pressure": "135/88",
+          "heart_rate": 78,
+          "weight_lbs": 192,
+          "height_inches": 70,
+          "bmi": 27.5,
+          "temperature": 99.1,
+          "respiratory_rate": 18,
+          "oxygen_saturation": 97
+        },
+        {
+          "date": "2024-05-15",
+          "blood_pressure": "125/82",
+          "heart_rate": 72,
+          "weight_lbs": 186,
+          "height_inches": 70,
+          "bmi": 26.7,
+          "temperature": 98.4,
+          "respiratory_rate": 16,
+          "oxygen_saturation": 98
+        },
+        {
+          "date": "2024-09-20",
+          "blood_pressure": "122/78",
+          "heart_rate": 70,
+          "weight_lbs": 180,
+          "height_inches": 70,
+          "bmi": 25.8,
+          "temperature": 98.6,
+          "respiratory_rate": 15,
+          "oxygen_saturation": 99
+        }
+      ]
+    },
+    "labs": {
+      "entries": [
+        {
+          "date": "2024-02-28",
+          "test_name": "Emergency Panel",
+          "total_cholesterol": 225,
+          "ldl": 145,
+          "hdl": 45,
+          "triglycerides": 175,
+          "a1c": 6.4,
+          "fasting_glucose": 115,
+          "creatinine": 1.1,
+          "bun": 20,
+          "potassium": 4.2,
+          "sodium": 140
+        },
+        {
+          "date": "2024-09-20",
+          "test_name": "Follow-up Panel",
+          "total_cholesterol": 195,
+          "ldl": 115,
+          "hdl": 55,
+          "triglycerides": 125,
+          "a1c": 5.7,
+          "fasting_glucose": 98,
+          "creatinine": 0.9,
+          "bun": 16
+        }
+      ]
+    },
+    "meds": {
+      "entries": [
+        {
+          "medication": "Lisinopril",
+          "dose": "10mg",
+          "frequency": "Once daily",
+          "start_date": "2023-06-01",
+          "prescriber": "Dr. Johnson (Hospital B)",
+          "purpose": "Hypertension",
+          "notes": "Continued from Hospital A prescription"
+        },
+        {
+          "medication": "Aspirin",
+          "dose": "81mg",
+          "frequency": "Once daily",
+          "start_date": "2024-02-28",
+          "prescriber": "Dr. Williams",
+          "purpose": "Cardiovascular protection",
+          "side_effects_reported": []
+        },
+        {
+          "medication": "Atorvastatin",
+          "dose": "40mg",
+          "frequency": "Once daily at bedtime",
+          "start_date": "2024-03-01",
+          "prescriber": "Dr. Johnson",
+          "purpose": "Cholesterol - dose increased",
+          "notes": "Increased from 20mg due to elevated LDL"
+        }
+      ]
+    },
+    "encounters": {
+      "entries": [
+        {
+          "date": "2024-02-28",
+          "type": "Emergency Visit",
+          "provider": "Dr. Williams",
+          "department": "Emergency Medicine",
+          "chief_complaint": "Chest discomfort",
+          "notes": "Patient presented with mild chest discomfort. Cardiac workup negative. Attributed to GERD. Started on aspirin for prevention."
+        },
+        {
+          "date": "2024-05-15",
+          "type": "Cardiology Consult",
+          "provider": "Dr. Patel",
+          "department": "Cardiology",
+          "chief_complaint": "Follow-up after ER visit",
+          "notes": "Stress test normal. Echo shows normal EF. Continue current medications. Risk factor modification emphasized."
+        },
+        {
+          "date": "2024-09-20",
+          "type": "Primary Care Follow-up",
+          "provider": "Dr. Johnson",
+          "department": "Family Medicine",
+          "chief_complaint": "Routine follow-up",
+          "notes": "Excellent progress. Weight down, labs improved. Patient following diet and exercise program."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "hospital": "Hospital C",
+  "hospital_location": "Scottsdale, Arizona",
+  "patient_id": "DEMO-001",
+  "records": {
+    "vitals": {
+      "entries": [
+        {
+          "date": "2024-03-10",
+          "blood_pressure": "130/85",
+          "heart_rate": 74,
+          "weight_lbs": 188,
+          "height_inches": 70,
+          "bmi": 27.0,
+          "temperature": 98.6
+        },
+        {
+          "date": "2024-08-22",
+          "blood_pressure": "124/80",
+          "heart_rate": 68,
+          "weight_lbs": 181,
+          "height_inches": 70,
+          "bmi": 26.0,
+          "temperature": 98.4
+        },
+        {
+          "date": "2024-11-15",
+          "blood_pressure": "120/76",
+          "heart_rate": 66,
+          "weight_lbs": 178,
+          "height_inches": 70,
+          "bmi": 25.5,
+          "temperature": 98.5
+        }
+      ]
+    },
+    "labs": {
+      "entries": [
+        {
+          "date": "2024-03-10",
+          "test_name": "Specialist Panel",
+          "total_cholesterol": 210,
+          "ldl": 130,
+          "hdl": 50,
+          "triglycerides": 150,
+          "a1c": 6.0,
+          "fasting_glucose": 105,
+          "vitamin_d": 28,
+          "tsh": 2.1
+        },
+        {
+          "date": "2024-08-22",
+          "test_name": "Follow-up Labs",
+          "total_cholesterol": 188,
+          "ldl": 108,
+          "hdl": 58,
+          "triglycerides": 110,
+          "a1c": 5.6,
+          "fasting_glucose": 95,
+          "vitamin_d": 45,
+          "tsh": 2.0
+        },
+        {
+          "date": "2024-11-15",
+          "test_name": "Annual Labs",
+          "total_cholesterol": 182,
+          "ldl": 102,
+          "hdl": 60,
+          "triglycerides": 100,
+          "a1c": 5.4,
+          "fasting_glucose": 92,
+          "vitamin_d": 52,
+          "tsh": 1.9,
+          "creatinine": 0.85,
+          "gfr": 95
+        }
+      ]
+    },
+    "meds": {
+      "entries": [
+        {
+          "medication": "Vitamin D3",
+          "dose": "2000 IU",
+          "frequency": "Once daily",
+          "start_date": "2024-03-15",
+          "prescriber": "Dr. Thompson",
+          "purpose": "Vitamin D deficiency",
+          "side_effects_reported": []
+        },
+        {
+          "medication": "Metformin",
+          "dose": "500mg",
+          "frequency": "Once daily",
+          "start_date": "2024-08-25",
+          "prescriber": "Dr. Thompson",
+          "purpose": "Prediabetes - dose reduced due to improvement",
+          "notes": "Reduced from twice daily based on A1C improvement"
+        },
+        {
+          "medication": "Lisinopril",
+          "dose": "5mg",
+          "frequency": "Once daily",
+          "start_date": "2024-09-01",
+          "prescriber": "Dr. Thompson",
+          "purpose": "Blood pressure - dose reduced",
+          "notes": "Reduced from 10mg due to excellent BP control"
+        },
+        {
+          "medication": "Fish Oil",
+          "dose": "1000mg",
+          "frequency": "Once daily",
+          "start_date": "2024-03-15",
+          "prescriber": "Dr. Thompson",
+          "purpose": "Cardiovascular health",
+          "side_effects_reported": []
+        }
+      ]
+    },
+    "encounters": {
+      "entries": [
+        {
+          "date": "2024-03-10",
+          "type": "New Patient Visit",
+          "provider": "Dr. Thompson",
+          "department": "Integrative Medicine",
+          "chief_complaint": "Wellness optimization",
+          "notes": "Patient seeking integrative approach. Reviewed records from Hospitals A and B. Added vitamin D supplementation."
+        },
+        {
+          "date": "2024-08-22",
+          "type": "Follow-up",
+          "provider": "Dr. Thompson",
+          "department": "Integrative Medicine",
+          "chief_complaint": "Progress review",
+          "notes": "Significant improvement in all markers. Weight down 10 lbs. A1C normalized. Reducing metformin dose."
+        },
+        {
+          "date": "2024-11-15",
+          "type": "Annual Wellness",
+          "provider": "Dr. Thompson",
+          "department": "Integrative Medicine",
+          "chief_complaint": "Annual review",
+          "notes": "Outstanding progress over the year. All metabolic markers in optimal range. Patient exercising regularly, following Mediterranean diet."
+        }
+      ]
+    }
+  }
+}
