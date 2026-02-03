@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Provider Portal - MedAgg</title>
+    <title>Provider Portal - Evexia</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -21,9 +21,16 @@
 
         <main>
             <section class="card" id="token-input-section">
-                <h2>Enter Share Token</h2>
-                <p>Enter the share token provided by your patient to access their medical records.</p>
-                
+                <h2>Enter Provider Information and Share Token</h2>
+
+                <div class="form-group">
+                    <label for="provider-name">Your Name</label>
+                    <input type="text" id="provider-name" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="provider-org">Organization</label>
+                    <input type="text" id="provider-org" placeholder="Enter your clinic or hospital name" required>
+                </div>
                 <div class="form-group">
                     <label for="access-token">Share Token</label>
                     <input type="text" id="access-token" placeholder="Paste the patient's share token here" required>
