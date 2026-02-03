@@ -56,7 +56,7 @@
           "ldl": 135,
           "hdl": 48,
           "triglycerides": 160,
-          "a1c": 6.2,
+          "a1c": 72,
           "fasting_glucose": 108,
           "creatinine": 1.0,
           "bun": 18
@@ -128,7 +128,7 @@
           "provider": "Dr. Chen",
           "department": "Endocrinology",
           "chief_complaint": "A1C monitoring",
-          "notes": "A1C improved from 6.2 to 5.9. Continue current regimen. Lifestyle modifications effective."
+          "notes": "A1C improved from 72 to 5.9. Continue current regimen. Lifestyle modifications effective."
         }
       ]
     }
