@@ -1,12 +1,12 @@
 {
-  "hospital": "Hospital B",
+  "hospital": "Mayo Clinic",
   "hospital_location": "Tucson, Arizona",
   "patient_id": "DEMO-001",
   "records": {
     "vitals": {
       "entries": [
         {
-          "date": "2024-02-28",
+          "date": "05-10-2024",
           "blood_pressure": "135/88",
           "heart_rate": 78,
           "weight_lbs": 192,
@@ -17,7 +17,7 @@
           "oxygen_saturation": 97
         },
         {
-          "date": "2024-05-15",
+          "date": "01-27-2024",
           "blood_pressure": "125/82",
           "heart_rate": 72,
           "weight_lbs": 186,
@@ -28,7 +28,7 @@
           "oxygen_saturation": 98
         },
         {
-          "date": "2024-09-20",
+          "date": "08-15-2023",
           "blood_pressure": "122/78",
           "heart_rate": 70,
           "weight_lbs": 180,
@@ -43,7 +43,7 @@
     "labs": {
       "entries": [
         {
-          "date": "2024-02-28",
+          "date": "01-27-2024",
           "test_name": "Emergency Panel",
           "total_cholesterol": 225,
           "ldl": 145,
@@ -57,7 +57,7 @@
           "sodium": 140
         },
         {
-          "date": "2024-09-20",
+          "date": "08-15-2023",
           "test_name": "Follow-up Panel",
           "total_cholesterol": 195,
           "ldl": 115,
@@ -85,7 +85,7 @@
           "medication": "Aspirin",
           "dose": "81mg",
           "frequency": "Once daily",
-          "start_date": "2024-02-28",
+          "start_date": "01-27-2024",
           "prescriber": "Dr. Williams",
           "purpose": "Cardiovascular protection",
           "side_effects_reported": []
@@ -94,7 +94,7 @@
           "medication": "Atorvastatin",
           "dose": "40mg",
           "frequency": "Once daily at bedtime",
-          "start_date": "2024-03-01",
+          "start_date": "08-15-2023",
           "prescriber": "Dr. Johnson",
           "purpose": "Cholesterol - dose increased",
           "notes": "Increased from 20mg due to elevated LDL"
