@@ -130,7 +130,19 @@
         });
 
         async function accessRecords() {
+            const providerName = document.getElementById('provider-name').value.trim();
+            const providerOrg = document.getElementById('provider-org').value.trim();
             const token = document.getElementById('access-token').value.trim();
+            
+             
+            if (!providerName) {
+                showStatus('Please enter your name', 'error');
+                return;
+            }
+            if (!providerOrg) {
+                showStatus('Please enter your organization', 'error');
+                return;
+            }
             if (!token) {
                 showStatus('Please enter a share token', 'error');
                 return;
@@ -138,6 +150,8 @@
 
             const formData = new FormData();
             formData.append('token', token);
+            formData.append('provider_name', providerName);
+            formData.append('provider_org', providerOrg);
 
             try {
                 showStatus('Verifying token...', 'info');
