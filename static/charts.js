@@ -66,6 +66,7 @@ const sharedOptions = {
     },
     scales: {
         x: {
+            offset: true,
             grid: {
                 color: 'rgba(216, 208, 200, 0.5)',
                 drawBorder: false

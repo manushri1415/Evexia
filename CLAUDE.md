@@ -9,8 +9,8 @@ Evexia is a hackathon prototype for patient-controlled medical data aggregation.
 ## Commands
 
 ```bash
-# Run the application
-uv run uvicorn main:app --host 0.0.0.0 --port 5000
+# Run the application (port 8000 for local development)
+uv run uvicorn main:app --host 0.0.0.0 --port 8000
 
 # Or directly via Python
 uv run python main.py
