@@ -386,6 +386,300 @@ body.provider-portal .access-note {
     margin: 0;
 }
 
+/* =====================================================
+   DASHBOARD LAYOUT - Two-column post-auth view
+   ===================================================== */
+
+/* Dashboard container - shown after auth */
+.provider-dashboard {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.provider-dashboard__main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.provider-dashboard__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Dashboard cards (main area) */
+.dashboard-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px 24px;
+}
+
+.dashboard-card--gray {
+    background: #f5f5f5;
+}
+
+.dashboard-card__title {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0 0 16px;
+}
+
+.dashboard-card__label {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #666666;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Patient info header layout */
+.patient-info-header,
+.patient-info-subheader,
+.patient-info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 14px;
+    color: #333333;
+    margin-bottom: 8px;
+}
+
+.patient-info-header strong,
+.patient-info-subheader strong,
+.patient-info-row strong {
+    color: #1a1a1a;
+    font-weight: 600;
+}
+
+/* Vitals display grid */
+.vitals-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.vital-item {
+    text-align: center;
+    padding: 12px;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #e5e5e5;
+}
+
+.vital-item__label {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.vital-item__value {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.vital-item__unit {
+    font-size: 12px;
+    color: #666666;
+    margin-left: 2px;
+}
+
+/* History tabs */
+.history-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 12px;
+}
+
+.history-tab {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    color: #666666;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.history-tab:hover {
+    background: #e5e5e5;
+    color: #1a1a1a;
+}
+
+.history-tab.active {
+    background: #0a3d42;
+    color: #ffffff;
+}
+
+.history-content {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Sidebar panels */
+.sidebar-panel {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+.sidebar-panel--ai {
+    background: #e8f4f8;
+    border-color: #c8e6ec;
+}
+
+.sidebar-panel__title {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 12px;
+}
+
+.sidebar-panel--ai .sidebar-panel__title {
+    color: #0a3d42;
+}
+
+.sidebar-panel__content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333333;
+}
+
+.sidebar-empty {
+    font-size: 14px;
+    color: #999999;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Medication list in sidebar */
+.meds-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.meds-list__item {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+.meds-list__item:last-child {
+    border-bottom: none;
+}
+
+.meds-list__name {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.meds-list__dose {
+    font-size: 12px;
+    color: #666666;
+}
+
+/* Header actions (logout + logo) */
+.provider-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.provider-header__logout {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+}
+
+.provider-header__logout:hover {
+    opacity: 1;
+}
+
+/* Anomaly badges in AI summary */
+.anomaly-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 8px;
+    margin-bottom: 4px;
+}
+
+.anomaly-badge--high {
+    background: #fed7d7;
+    color: #c53030;
+}
+
+.anomaly-badge--medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.anomaly-badge--low {
+    background: #c6f6d5;
+    color: #276749;
+}
+
+/* Charts grid in trends tab */
+.provider-dashboard .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.provider-dashboard .chart-container {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+.provider-dashboard .chart-container h3 {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0 0 12px;
+}
+
+/* =====================================================
+   RESPONSIVE BREAKPOINTS
+   ===================================================== */
+
+/* Tablet - collapse to single column */
+@media (max-width: 900px) {
+    .provider-dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .provider-dashboard__sidebar {
+        order: -1; /* Move sidebar above on tablet/mobile */
+    }
+}
+
 /* Mobile responsive */
 @media (max-width: 640px) {
     .provider-form-row {
@@ -405,5 +699,31 @@ body.provider-portal .access-note {
 
     body.provider-portal .charts-grid {
         grid-template-columns: 1fr;
+    }
+
+    .provider-dashboard {
+        padding: 0 16px;
+    }
+
+    .dashboard-card {
+        padding: 16px;
+    }
+
+    .patient-info-header,
+    .patient-info-subheader,
+    .patient-info-row {
+        gap: 12px;
+    }
+
+    .vitals-display {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .provider-header__actions {
+        gap: 12px;
+    }
+
+    .provider-header__logout {
+        font-size: 12px;
     }
 }

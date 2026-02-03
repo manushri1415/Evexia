@@ -221,6 +221,8 @@
 
                     <button id="create-token-btn" class="btn btn-primary">Create Share Token</button>
 
+                    <div id="share-status" class="status-message" aria-live="polite" style="display: none;"></div>
+
                     <div id="token-result" class="token-display" style="display: none;">
                         <h4>Your Share Token</h4>
                         <p>Give this token to your healthcare provider:</p>
@@ -645,12 +647,17 @@
 
         async function createToken() {
             if (!currentPatientId) {
-                showStatus('Please load data first', 'error');
+                showShareStatus('Please load data first', 'error');
                 return;
             }
 
             const scope = Array.from(document.querySelectorAll('input[name="share-categories"]:checked')).map(cb => cb.value);
             const expiryHours = document.getElementById('expiry-hours').value;
+
+            if (scope.length === 0) {
+                showShareStatus('Please select at least one category to share', 'error');
+                return;
+            }
 
             const formData = new FormData();
             scope.forEach(s => formData.append('scope', s));
@@ -661,18 +668,30 @@
                     method: 'POST',
                     body: formData
                 });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    showShareStatus(errorData.detail || 'Failed to create token', 'error');
+                    return;
+                }
+
                 const data = await response.json();
 
                 if (data.success) {
+                    // Hide any previous error messages
+                    document.getElementById('share-status').style.display = 'none';
+
                     document.getElementById('token-result').style.display = 'block';
                     document.getElementById('share-token').textContent = data.token;
                     document.getElementById('token-expiry').textContent = new Date(data.expires_at).toLocaleString();
                     document.getElementById('token-scope').textContent = data.scope.join(', ');
 
                     loadAccessLogs();
+                } else {
+                    showShareStatus(data.error || 'Failed to create token', 'error');
                 }
             } catch (error) {
-                showStatus('Error creating token: ' + error.message, 'error');
+                showShareStatus('Error creating token: ' + error.message, 'error');
             }
         }
 
@@ -734,6 +753,13 @@
 
         function showStatus(message, type) {
             const statusEl = document.getElementById('load-status');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + type;
+            statusEl.style.display = 'block';
+        }
+
+        function showShareStatus(message, type) {
+            const statusEl = document.getElementById('share-status');
             statusEl.textContent = message;
             statusEl.className = 'status-message ' + type;
             statusEl.style.display = 'block';

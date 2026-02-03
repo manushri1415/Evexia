@@ -14,11 +14,15 @@
 <body class="provider-portal">
     <header class="provider-header">
         <a href="/" class="provider-header__back" aria-label="Back to home">&larr;</a>
-        <div class="provider-header__logo" aria-hidden="true"></div>
+        <div class="provider-header__actions">
+            <a href="/" class="provider-header__logout" id="logout-link" style="display: none;">Log out</a>
+            <div class="provider-header__logo" aria-hidden="true"></div>
+        </div>
     </header>
 
     <div class="container">
         <main>
+            <!-- Token Input Form (pre-auth) -->
             <section class="card" id="token-input-section">
                 <h2>Patient information:</h2>
 
@@ -39,83 +43,98 @@
 
                 <div id="access-status" class="status-message" aria-live="polite" style="display: none;"></div>
             </section>
-
-            <section class="card" id="patient-info-section" style="display: none;">
-                <h2>Patient Information</h2>
-                <div class="patient-info-grid">
-                    <div class="info-item">
-                        <label>Patient Name</label>
-                        <p id="patient-name-display"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>Date of Birth</label>
-                        <p id="patient-dob-display"></p>
-                    </div>
-                    <div class="info-item">
-                        <label>Authorized Categories</label>
-                        <p id="scope-display"></p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="card" id="summary-section" style="display: none;">
-                <h2>Patient Summary</h2>
-
-                <div class="summary-card clinician-summary">
-                    <h3>Clinical Summary</h3>
-                    <pre id="clinician-summary-text"></pre>
-                </div>
-
-                <div class="summary-card anomalies-section" id="anomalies-container" style="display: none;">
-                    <h3>Flagged Items</h3>
-                    <p class="summary-note">Items that may need clinical attention</p>
-                    <div id="anomalies-list"></div>
-                </div>
-
-                <div class="disclaimer-inline">
-                    <strong>Important:</strong> {{ disclaimer }}
-                </div>
-            </section>
-
-            <section class="card" id="charts-section" style="display: none;">
-                <h2>Health Metrics</h2>
-
-                <div class="charts-grid">
-                    <div class="chart-container" id="bmi-chart-container" style="display: none;">
-                        <h3>BMI Trend</h3>
-                        <canvas id="bmi-chart"></canvas>
-                    </div>
-                    <div class="chart-container" id="cholesterol-chart-container" style="display: none;">
-                        <h3>Cholesterol Trend</h3>
-                        <canvas id="cholesterol-chart"></canvas>
-                    </div>
-                    <div class="chart-container" id="a1c-chart-container" style="display: none;">
-                        <h3>A1C Trend</h3>
-                        <canvas id="a1c-chart"></canvas>
-                    </div>
-                </div>
-            </section>
-
-            <section class="card" id="records-section" style="display: none;">
-                <h2>Medical Records</h2>
-
-                <div class="records-tabs" role="tablist">
-                    <button class="tab-btn active" data-category="all" role="tab" aria-selected="true">All</button>
-                    <button class="tab-btn" data-category="vitals" role="tab" aria-selected="false">Vitals</button>
-                    <button class="tab-btn" data-category="labs" role="tab" aria-selected="false">Labs</button>
-                    <button class="tab-btn" data-category="meds" role="tab" aria-selected="false">Medications</button>
-                    <button class="tab-btn" data-category="encounters" role="tab" aria-selected="false">Encounters</button>
-                </div>
-
-                <div id="records-container"></div>
-            </section>
         </main>
-
-        <footer>
-            <p class="footer-disclaimer">{{ disclaimer }}</p>
-            <p class="access-note">Your access to this data has been logged for patient transparency.</p>
-        </footer>
     </div>
+
+    <!-- Dashboard (post-auth, hidden initially) -->
+    <div class="provider-dashboard" id="provider-dashboard" style="display: none;">
+        <div class="provider-dashboard__main">
+            <!-- Patient Info Panel -->
+            <section class="dashboard-card" id="patient-info-panel">
+                <h2 class="dashboard-card__title">Patient information:</h2>
+                <div class="patient-info-header">
+                    <span>Name: <strong id="d-name"></strong></span>
+                    <span>DOB: <strong id="d-dob"></strong></span>
+                    <span>Age: <strong id="d-age"></strong> yrs</span>
+                    <span>Acct #: <strong id="d-account"></strong></span>
+                </div>
+                <div class="patient-info-subheader">
+                    <span>Sex: <strong id="d-sex">-</strong></span>
+                    <span id="d-encounter-info"></span>
+                    <span>with: <strong id="d-provider"></strong></span>
+                </div>
+                <div class="patient-info-row">
+                    <span>Encounter #: <strong id="d-encounter-num"></strong></span>
+                </div>
+                <div class="patient-info-row">
+                    <span>Appt. Reason: <strong id="d-appt-reason"></strong></span>
+                </div>
+            </section>
+
+            <!-- Vitals Panel -->
+            <section class="dashboard-card dashboard-card--gray" id="vitals-panel" style="display: none;">
+                <h3 class="dashboard-card__label">Vitals</h3>
+                <div class="vitals-display" id="vitals-content"></div>
+            </section>
+
+            <!-- Medical History Panel -->
+            <section class="dashboard-card dashboard-card--gray" id="history-panel">
+                <h3 class="dashboard-card__label">Patient Medical History</h3>
+                <div class="history-tabs" role="tablist">
+                    <button class="history-tab active" data-tab="records" role="tab" aria-selected="true">Records</button>
+                    <button class="history-tab" data-tab="trends" role="tab" aria-selected="false">Trends</button>
+                </div>
+                <div id="history-records" class="history-content"></div>
+                <div id="history-trends" class="history-content" style="display: none;">
+                    <div class="charts-grid">
+                        <div class="chart-container" id="bmi-chart-container" style="display: none;">
+                            <h3>BMI Trend</h3>
+                            <canvas id="bmi-chart"></canvas>
+                        </div>
+                        <div class="chart-container" id="cholesterol-chart-container" style="display: none;">
+                            <h3>Cholesterol Trend</h3>
+                            <canvas id="cholesterol-chart"></canvas>
+                        </div>
+                        <div class="chart-container" id="a1c-chart-container" style="display: none;">
+                            <h3>A1C Trend</h3>
+                            <canvas id="a1c-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <aside class="provider-dashboard__sidebar">
+            <!-- AI Summary -->
+            <div class="sidebar-panel sidebar-panel--ai">
+                <h3 class="sidebar-panel__title">AI Summary</h3>
+                <div id="ai-summary-content" class="sidebar-panel__content">
+                    <p class="sidebar-empty">No summary available</p>
+                </div>
+            </div>
+
+            <!-- Allergies -->
+            <div class="sidebar-panel">
+                <h3 class="sidebar-panel__title">Allergies:</h3>
+                <div id="allergies-content">
+                    <p class="sidebar-empty">No known allergies</p>
+                </div>
+            </div>
+
+            <!-- Medications -->
+            <div class="sidebar-panel">
+                <h3 class="sidebar-panel__title">Medications:</h3>
+                <div id="meds-sidebar-content">
+                    <p class="sidebar-empty">No medications on file</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <footer id="dashboard-footer" style="display: none;">
+        <p class="footer-disclaimer">{{ disclaimer }}</p>
+        <p class="access-note">Your access to this data has been logged for patient transparency.</p>
+    </footer>
 
     <script src="/static/charts.js"></script>
     <script>
@@ -124,15 +143,19 @@
 
         document.getElementById('access-btn').addEventListener('click', accessRecords);
 
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.tab-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.setAttribute('aria-selected', 'false');
+        // History tab switching
+        document.querySelectorAll('.history-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.history-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
                 });
-                e.target.classList.add('active');
-                e.target.setAttribute('aria-selected', 'true');
-                filterRecords(e.target.dataset.category);
+                tab.classList.add('active');
+                tab.setAttribute('aria-selected', 'true');
+
+                const target = tab.dataset.tab;
+                document.getElementById('history-records').style.display = target === 'records' ? 'block' : 'none';
+                document.getElementById('history-trends').style.display = target === 'trends' ? 'block' : 'none';
             });
         });
 
@@ -192,60 +215,25 @@
         }
 
         function displayPatientData(data) {
-            document.getElementById('patient-info-section').style.display = 'block';
-            document.getElementById('patient-name-display').textContent = data.patient_name;
-            document.getElementById('patient-dob-display').textContent = data.date_of_birth || 'Not on file';
-            document.getElementById('scope-display').textContent = data.scope.join(', ');
+            // Hide token form, show dashboard
+            document.getElementById('token-input-section').style.display = 'none';
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById('provider-dashboard').style.display = 'grid';
+            document.getElementById('dashboard-footer').style.display = 'block';
+            document.getElementById('logout-link').style.display = 'inline';
 
             authorizedScope = data.scope;
             allRecords = data.records;
 
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                const category = btn.dataset.category;
-                if (category !== 'all' && !authorizedScope.includes(category)) {
-                    btn.style.display = 'none';
-                }
-            });
+            // Populate dashboard sections
+            populatePatientInfo(data);
+            populateVitals(data.records);
+            populateSidebarMeds(data.records);
+            populateAISummary(data.summary);
+            populateMedicalHistory(data.records);
 
-            if (data.summary) {
-                document.getElementById('summary-section').style.display = 'block';
-                document.getElementById('clinician-summary-text').textContent =
-                    data.summary.clinician_summary || 'No clinical summary available';
-
-                const anomaliesContainer = document.getElementById('anomalies-container');
-                const anomaliesList = document.getElementById('anomalies-list');
-
-                if (data.summary.anomalies && data.summary.anomalies.length > 0) {
-                    anomaliesContainer.style.display = 'block';
-                    while (anomaliesList.firstChild) {
-                        anomaliesList.removeChild(anomaliesList.firstChild);
-                    }
-                    data.summary.anomalies.forEach(a => {
-                        const div = document.createElement('div');
-                        div.className = 'anomaly-item severity-' + a.severity;
-
-                        const typeSpan = document.createElement('span');
-                        typeSpan.className = 'anomaly-type';
-                        typeSpan.textContent = a.type;
-
-                        const severitySpan = document.createElement('span');
-                        severitySpan.className = 'anomaly-severity';
-                        severitySpan.textContent = a.severity;
-
-                        const desc = document.createElement('p');
-                        desc.textContent = a.description;
-
-                        div.appendChild(typeSpan);
-                        div.appendChild(severitySpan);
-                        div.appendChild(desc);
-                        anomaliesList.appendChild(div);
-                    });
-                }
-            }
-
+            // Setup charts
             if (data.chart_data) {
-                document.getElementById('charts-section').style.display = 'block';
-
                 if (data.chart_data.bmi && data.chart_data.bmi.length > 0 && authorizedScope.includes('vitals')) {
                     document.getElementById('bmi-chart-container').style.display = 'block';
                 }
@@ -255,35 +243,246 @@
                 if (data.chart_data.a1c && data.chart_data.a1c.length > 0 && authorizedScope.includes('labs')) {
                     document.getElementById('a1c-chart-container').style.display = 'block';
                 }
-
                 renderCharts(data.chart_data);
             }
-
-            document.getElementById('records-section').style.display = 'block';
-            filterRecords('all');
         }
 
-        function filterRecords(category) {
-            const container = document.getElementById('records-container');
-            let filtered = allRecords;
+        function calculateAge(dob) {
+            const birth = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            return age;
+        }
 
-            if (category !== 'all') {
-                filtered = allRecords.filter(r => r.category === category);
+        function getLatestEncounter(records) {
+            const encounters = records.filter(r => r.category === 'encounters');
+            if (encounters.length === 0) return null;
+            const allEntries = encounters.flatMap(r => r.data.entries);
+            if (allEntries.length === 0) return null;
+            allEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+            return allEntries[0];
+        }
+
+        function getLatestVitals(records) {
+            const vitals = records.filter(r => r.category === 'vitals');
+            if (vitals.length === 0) return null;
+            const allEntries = vitals.flatMap(r => r.data.entries);
+            if (allEntries.length === 0) return null;
+            allEntries.sort((a, b) => new Date(b.date) - new Date(a.date));
+            return allEntries[0];
+        }
+
+        function populatePatientInfo(data) {
+            document.getElementById('d-name').textContent = data.patient_name || '-';
+            document.getElementById('d-dob').textContent = data.date_of_birth || '-';
+            document.getElementById('d-age').textContent = data.date_of_birth ? calculateAge(data.date_of_birth) : '-';
+            document.getElementById('d-account').textContent = 'ACC-' + Date.now().toString().slice(-6);
+
+            const encounter = getLatestEncounter(allRecords);
+            if (encounter) {
+                const encounterInfo = document.getElementById('d-encounter-info');
+                const strong = document.createElement('strong');
+                strong.textContent = encounter.date || '';
+                encounterInfo.textContent = '';
+                encounterInfo.appendChild(strong);
+
+                document.getElementById('d-provider').textContent = encounter.provider || '-';
+                document.getElementById('d-encounter-num').textContent = 'ENC-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+                document.getElementById('d-appt-reason').textContent = encounter.chief_complaint || encounter.type || '-';
+            } else {
+                const encounterInfo = document.getElementById('d-encounter-info');
+                const strong = document.createElement('strong');
+                strong.textContent = '-';
+                encounterInfo.textContent = '';
+                encounterInfo.appendChild(strong);
+
+                document.getElementById('d-provider').textContent = '-';
+                document.getElementById('d-encounter-num').textContent = '-';
+                document.getElementById('d-appt-reason').textContent = '-';
+            }
+        }
+
+        function populateVitals(records) {
+            if (!authorizedScope.includes('vitals')) {
+                document.getElementById('vitals-panel').style.display = 'none';
+                return;
             }
 
+            const latestVitals = getLatestVitals(records);
+            if (!latestVitals) {
+                document.getElementById('vitals-panel').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('vitals-panel').style.display = 'block';
+            const container = document.getElementById('vitals-content');
             while (container.firstChild) {
                 container.removeChild(container.firstChild);
             }
 
-            if (filtered.length === 0) {
-                const noRecords = document.createElement('p');
-                noRecords.className = 'no-records';
-                noRecords.textContent = 'No records in this category.';
-                container.appendChild(noRecords);
+            const vitalsToShow = [
+                { label: 'BP', value: latestVitals.blood_pressure, unit: '' },
+                { label: 'HR', value: latestVitals.heart_rate, unit: 'bpm' },
+                { label: 'BMI', value: latestVitals.bmi, unit: '' },
+                { label: 'Temp', value: latestVitals.temperature, unit: '°F' },
+                { label: 'Weight', value: latestVitals.weight, unit: 'lbs' }
+            ];
+
+            vitalsToShow.forEach(v => {
+                if (v.value) {
+                    const div = document.createElement('div');
+                    div.className = 'vital-item';
+
+                    const labelDiv = document.createElement('div');
+                    labelDiv.className = 'vital-item__label';
+                    labelDiv.textContent = v.label;
+
+                    const valueDiv = document.createElement('div');
+                    valueDiv.className = 'vital-item__value';
+                    valueDiv.textContent = v.value;
+
+                    if (v.unit) {
+                        const unitSpan = document.createElement('span');
+                        unitSpan.className = 'vital-item__unit';
+                        unitSpan.textContent = v.unit;
+                        valueDiv.appendChild(unitSpan);
+                    }
+
+                    div.appendChild(labelDiv);
+                    div.appendChild(valueDiv);
+                    container.appendChild(div);
+                }
+            });
+        }
+
+        function populateSidebarMeds(records) {
+            if (!authorizedScope.includes('meds')) {
                 return;
             }
 
-            filtered.forEach(record => {
+            const meds = records.filter(r => r.category === 'meds');
+            if (meds.length === 0) return;
+
+            const allMeds = meds.flatMap(r => r.data.entries);
+            if (allMeds.length === 0) return;
+
+            const container = document.getElementById('meds-sidebar-content');
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            const ul = document.createElement('ul');
+            ul.className = 'meds-list';
+
+            // Show top 5 medications
+            const topMeds = allMeds.slice(0, 5);
+            topMeds.forEach(med => {
+                const li = document.createElement('li');
+                li.className = 'meds-list__item';
+
+                const nameDiv = document.createElement('div');
+                nameDiv.className = 'meds-list__name';
+                nameDiv.textContent = med.medication || med.name || 'Unknown';
+                li.appendChild(nameDiv);
+
+                const dose = med.dose || '';
+                if (dose) {
+                    const doseDiv = document.createElement('div');
+                    doseDiv.className = 'meds-list__dose';
+                    doseDiv.textContent = dose;
+                    li.appendChild(doseDiv);
+                }
+
+                ul.appendChild(li);
+            });
+
+            container.appendChild(ul);
+
+            if (allMeds.length > 5) {
+                const more = document.createElement('p');
+                more.style.fontSize = '12px';
+                more.style.color = '#666666';
+                more.style.marginTop = '8px';
+                more.textContent = '+ ' + (allMeds.length - 5) + ' more';
+                container.appendChild(more);
+            }
+        }
+
+        function populateAISummary(summary) {
+            const container = document.getElementById('ai-summary-content');
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            if (!summary || !summary.clinician_summary) {
+                const p = document.createElement('p');
+                p.className = 'sidebar-empty';
+                p.textContent = 'No summary available';
+                container.appendChild(p);
+                return;
+            }
+
+            const summaryP = document.createElement('p');
+            summaryP.style.margin = '0 0 12px';
+            summaryP.style.whiteSpace = 'pre-wrap';
+            summaryP.textContent = summary.clinician_summary;
+            container.appendChild(summaryP);
+
+            // Add anomaly badges if present
+            if (summary.anomalies && summary.anomalies.length > 0) {
+                const flaggedDiv = document.createElement('div');
+                flaggedDiv.style.marginTop = '12px';
+                flaggedDiv.style.paddingTop = '12px';
+                flaggedDiv.style.borderTop = '1px solid #c8e6ec';
+
+                const flaggedLabel = document.createElement('p');
+                flaggedLabel.style.fontSize = '12px';
+                flaggedLabel.style.color = '#666';
+                flaggedLabel.style.margin = '0 0 8px';
+                flaggedLabel.textContent = 'Flagged Items:';
+                flaggedDiv.appendChild(flaggedLabel);
+
+                summary.anomalies.forEach(a => {
+                    const badge = document.createElement('span');
+                    badge.className = 'anomaly-badge anomaly-badge--' + a.severity;
+                    badge.textContent = a.type + ': ' + a.severity;
+                    flaggedDiv.appendChild(badge);
+                });
+
+                container.appendChild(flaggedDiv);
+            }
+        }
+
+        function populateMedicalHistory(records) {
+            const container = document.getElementById('history-records');
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            if (records.length === 0) {
+                const p = document.createElement('p');
+                p.className = 'sidebar-empty';
+                p.textContent = 'No records available';
+                container.appendChild(p);
+                return;
+            }
+
+            // Group records by category, respecting authorized scope
+            const filteredRecords = records.filter(r => authorizedScope.includes(r.category));
+
+            if (filteredRecords.length === 0) {
+                const p = document.createElement('p');
+                p.className = 'sidebar-empty';
+                p.textContent = 'No authorized records available';
+                container.appendChild(p);
+                return;
+            }
+
+            filteredRecords.forEach(record => {
                 const recordCard = document.createElement('div');
                 recordCard.className = 'record-card';
 
