@@ -1,4 +1,4 @@
-# MedAgg - Patient Medical Data Aggregator
+# Evexia - Patient Medical Data Aggregator
 
 A hackathon prototype for patient-controlled medical data aggregation from multiple Arizona hospitals with AI-powered summaries and secure provider sharing.
 
