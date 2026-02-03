@@ -31,7 +31,7 @@ async def patient_page(request: Request):
     return templates.TemplateResponse("patient.html", {
         "request": request,
         "disclaimer": DISCLAIMER,
-        "hospitals": ["Hospital A", "Hospital B", "Hospital C"],
+        "hospitals": ["Banner Health", "Mayo Clinic", "Hospital C"],
         "categories": ["vitals", "labs", "meds", "encounters"]
     })
 
