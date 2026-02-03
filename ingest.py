@@ -7,7 +7,7 @@ SAMPLE_DATA_DIR = "sample_data"
 UPLOADS_DIR = "uploads"
 
 VALID_CATEGORIES = ["vitals", "labs", "meds", "medications", "encounters"]
-VALID_HOSPITALS = ["Banner Health", "Mayo Clinic", "Hospital C"]
+VALID_HOSPITALS = ["Banner Health", "Mayo Clinic", "Phoenician Medical Center"]
 
 def load_sample_data(hospitals: Optional[List[str]] = None, categories: Optional[List[str]] = None) -> List[Dict]:
     if hospitals is None:

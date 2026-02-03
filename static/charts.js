@@ -9,15 +9,15 @@ let a1cChart = null;
 
 // Luxury wellness color palette - sage, gold, warm bronze
 const chartColors = {
-    'Hospital A': {
+    'Banner Health': {
         bg: 'rgba(93, 130, 104, 0.15)',
         border: 'rgb(93, 130, 104)'  // Sage green
     },
-    'Hospital B': {
+    'Mayo Clinic': {
         bg: 'rgba(201, 160, 72, 0.15)',
         border: 'rgb(201, 160, 72)'  // Warm gold
     },
-    'Hospital C': {
+    'Phoenician Medical Center': {
         bg: 'rgba(107, 91, 79, 0.15)',
         border: 'rgb(107, 91, 79)'   // Warm bronze
     }

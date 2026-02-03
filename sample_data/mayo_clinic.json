@@ -77,9 +77,9 @@
           "dose": "10mg",
           "frequency": "Once daily",
           "start_date": "2023-06-01",
-          "prescriber": "Dr. Johnson (Hospital B)",
+          "prescriber": "Dr. Johnson (Mayo Clinic)",
           "purpose": "Hypertension",
-          "notes": "Continued from Hospital A prescription"
+          "notes": "Continued from Banner Health prescription"
         },
         {
           "medication": "Aspirin",

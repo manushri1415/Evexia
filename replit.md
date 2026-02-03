@@ -18,9 +18,9 @@ MedAgg is a hackathon prototype for patient-controlled medical data aggregation.
 │   ├── styles.css       # Application styling
 │   └── charts.js        # Chart.js visualization logic
 ├── sample_data/         # Sample medical records from Arizona hospitals
-│   ├── hospital_a.json  # Phoenix hospital data
-│   ├── hospital_b.json  # Tucson hospital data
-│   └── hospital_c.json  # Scottsdale hospital data
+│   ├── banner_health.json  # Banner Health (Phoenix)
+│   ├── mayo_clinic.json  # Mayo Clinic (Tucson)
+│   └── phoenician_medical_center.json  # Phoenician Medical Center (Scottsdale)
 ├── uploads/             # User-uploaded JSON files
 ├── app.db               # SQLite database (auto-created)
 └── README.md            # Setup and testing documentation

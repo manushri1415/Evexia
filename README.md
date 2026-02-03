@@ -5,7 +5,7 @@ A hackathon prototype for patient-controlled medical data aggregation from multi
 ## Overview
 
 MedAgg allows patients to:
-- Load/upload medical records from multiple hospitals (Hospital A, B, C in Arizona)
+- Load/upload medical records from multiple hospitals (Banner Health, Mayo Clinic, and Phoenician Medical Center in Arizona)
 - View AI-generated health summaries (both clinical and patient-friendly)
 - See interactive health metric charts (BMI, cholesterol, A1C)
 - Create secure share tokens with scoped access and expiration
@@ -78,9 +78,9 @@ The app will work fully end-to-end even without AI - mock summaries provide real
 │   ├── styles.css       # Application styles
 │   └── charts.js        # Chart.js visualization code
 ├── sample_data/
-│   ├── hospital_a.json  # Sample data from Hospital A (Phoenix)
-│   ├── hospital_b.json  # Sample data from Hospital B (Tucson)
-│   └── hospital_c.json  # Sample data from Hospital C (Scottsdale)
+│   ├── banner_health.json  # Sample data from Banner Health (Phoenix)
+│   ├── mayo_clinic.json  # Sample data from Mayo Clinic (Tucson)
+│   └── phoenician_medical_center.json  # Sample data from Phoenician Medical Center (Scottsdale)
 ├── uploads/             # Uploaded JSON files (created on first upload)
 ├── app.db               # SQLite database (created on first run)
 └── README.md            # This file
