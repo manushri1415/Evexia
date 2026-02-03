@@ -64,6 +64,8 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             token_id INTEGER NOT NULL,
             viewer_ip TEXT,
+            provider_name TEXT,
+            provider_org TEXT,
             accessed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (token_id) REFERENCES share_tokens(id)
         )
@@ -220,15 +222,13 @@ def get_patient_tokens(patient_id: int) -> List[Dict]:
         result.append(token_data)
     return result
 
-def log_access(token_id: int, viewer_ip: str):
+def log_access(token_id: int, viewer_ip: str, provider_name: str = None, provider_org: str = None):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
-        "INSERT INTO access_logs (token_id, viewer_ip) VALUES (?, ?)",
-        (token_id, viewer_ip)
+        "INSERT INTO access_logs (token_id, viewer_ip, provider_name, provider_org) VALUES (?, ?, ?, ?)",
+        (token_id, viewer_ip, provider_name, provider_org)
     )
-    conn.commit()
-    conn.close()
 
 def get_patient_access_logs(patient_id: int) -> List[Dict]:
     conn = get_connection()
