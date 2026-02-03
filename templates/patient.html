@@ -10,103 +10,144 @@
     <link rel="stylesheet" href="/static/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <a href="/" class="back-link">&larr; Back to Home</a>
-            <h1>Patient Portal</h1>
-            <p class="subtitle">Manage and share your medical records</p>
+<body class="portal-active">
+    <div class="portal-shell">
+        <!-- Header -->
+        <header class="portal-header">
+            <button class="portal-nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <span class="portal-header__brand">Evexia</span>
+            <div class="portal-header__profile">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
         </header>
 
-        <div class="disclaimer-banner">
-            {{ disclaimer }}
-        </div>
+        <!-- Mobile nav overlay -->
+        <div class="portal-nav-overlay" id="nav-overlay"></div>
 
-        <main>
-            <section class="card" id="data-input-section">
-                <h2>Step 1: Load Your Medical Data</h2>
-                
-                <div class="form-group">
-                    <label for="patient-name">Your Name</label>
-                    <input type="text" id="patient-name" placeholder="Enter your full name" required>
+        <!-- Left Navigation -->
+        <nav class="portal-nav" id="portal-nav">
+            <a href="#home" class="portal-nav__link portal-nav__link--active" data-view="home">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Home</span>
+            </a>
+            <a href="#reports" class="portal-nav__link" data-view="reports">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                <span>Test Reports</span>
+            </a>
+            <a href="#history" class="portal-nav__link" data-view="history">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Medical History</span>
+            </a>
+            <a href="#meds" class="portal-nav__link" data-view="meds">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                </svg>
+                <span>Medications</span>
+            </a>
+            <a href="#share" class="portal-nav__link" data-view="share">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+                <span>Share Records</span>
+            </a>
+            <div class="portal-nav__divider">
+                <a href="/" class="portal-nav__link portal-nav__link--logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="portal-main">
+            <!-- Home View (default) -->
+            <div id="view-home" class="portal-view portal-view--active">
+                <div class="portal-visit-banner">
+                    <p class="portal-visit-banner__label">Last Visit</p>
+                    <p class="portal-visit-banner__date" id="last-visit-date">--</p>
                 </div>
 
-                <div class="form-group">
-                    <label>Select Hospitals (Arizona)</label>
-                    <div class="checkbox-group">
-                        {% for hospital in hospitals %}
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="hospitals" value="{{ hospital }}" checked>
-                            {{ hospital }}
-                        </label>
-                        {% endfor %}
-                    </div>
+                <div class="portal-chart-card" id="home-bmi-chart-card" style="display: none;">
+                    <h3 class="portal-chart-card__title">BMI Trend</h3>
+                    <canvas id="bmi-chart-mini"></canvas>
                 </div>
 
-                <div class="form-group">
-                    <label>Select Data Categories</label>
-                    <div class="checkbox-group">
-                        {% for category in categories %}
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="categories" value="{{ category }}" checked>
-                            {{ category | capitalize }}
-                        </label>
-                        {% endfor %}
+                <div class="portal-alerts" id="home-alerts" style="display: none;">
+                    <div class="portal-alerts__header">
+                        <span class="portal-alerts__icon">!</span>
+                        <h2 class="portal-alerts__title">Results that need review</h2>
                     </div>
+                    <div class="portal-alerts__box" id="alerts-content"></div>
                 </div>
 
-                <div class="button-group">
-                    <button id="load-sample-btn" class="btn btn-primary">Load Sample Data</button>
-                    <span class="or-divider">OR</span>
-                    <div class="upload-group">
-                        <input type="file" id="file-upload" accept=".json" hidden>
-                        <button id="upload-btn" class="btn btn-secondary">Upload JSON File</button>
+                <!-- Data Input Section (shown when no data loaded) -->
+                <section class="card" id="data-input-section">
+                    <h2>Load Your Medical Data</h2>
+
+                    <div class="form-group">
+                        <label for="patient-name">Your Name</label>
+                        <input type="text" id="patient-name" placeholder="Enter your full name" required>
                     </div>
+
+                    <div class="form-group">
+                        <label>Select Hospitals (Arizona)</label>
+                        <div class="checkbox-group">
+                            {% for hospital in hospitals %}
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="hospitals" value="{{ hospital }}" checked>
+                                {{ hospital }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Data Categories</label>
+                        <div class="checkbox-group">
+                            {% for category in categories %}
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="categories" value="{{ category }}" checked>
+                                {{ category | capitalize }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button id="load-sample-btn" class="btn btn-primary">Load Sample Data</button>
+                        <span class="or-divider">OR</span>
+                        <div class="upload-group">
+                            <input type="file" id="file-upload" accept=".json" hidden>
+                            <button id="upload-btn" class="btn btn-secondary">Upload JSON File</button>
+                        </div>
+                    </div>
+
+                    <div id="load-status" class="status-message" style="display: none;"></div>
+                </section>
+
+                <div class="disclaimer-banner" style="margin-top: 24px;">
+                    {{ disclaimer }}
                 </div>
+            </div>
 
-                <div id="load-status" class="status-message" style="display: none;"></div>
-            </section>
-
-            <section class="card" id="summary-section" style="display: none;">
-                <h2>Step 2: Generate AI Summary</h2>
-                <p>Generate an AI-powered analysis of your medical records.</p>
-                
-                <button id="generate-summary-btn" class="btn btn-primary">Generate Summary</button>
-                
-                <div id="summary-loading" class="loading" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Analyzing your medical records...</p>
-                </div>
-
-                <div id="summary-results" style="display: none;">
-                    <div class="summary-card clinician-summary">
-                        <h3>Clinical Summary</h3>
-                        <p class="summary-note">For healthcare providers</p>
-                        <pre id="clinician-summary-text"></pre>
-                    </div>
-
-                    <div class="summary-card patient-summary">
-                        <h3>Your Health Summary</h3>
-                        <p class="summary-note">In plain language</p>
-                        <p id="patient-summary-text"></p>
-                    </div>
-
-                    <div class="summary-card anomalies-section" id="anomalies-container" style="display: none;">
-                        <h3>Flagged Items</h3>
-                        <p class="summary-note">Items that may need attention</p>
-                        <div id="anomalies-list"></div>
-                    </div>
-
-                    <div class="disclaimer-inline">
-                        <strong>Important:</strong> {{ disclaimer }}
-                    </div>
-                </div>
-            </section>
-
-            <section class="card" id="charts-section" style="display: none;">
-                <h2>Health Metrics Dashboard</h2>
-                
-                <div class="charts-grid">
+            <!-- Reports View -->
+            <div id="view-reports" class="portal-view">
+                <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--sage-700); margin-bottom: 24px;">Health Metrics Dashboard</h2>
+                <div class="charts-grid" id="charts-container">
                     <div class="chart-container">
                         <h3>BMI Over Time</h3>
                         <canvas id="bmi-chart"></canvas>
@@ -120,96 +161,193 @@
                         <canvas id="a1c-chart"></canvas>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section class="card" id="share-section" style="display: none;">
-                <h2>Step 3: Share With Your Provider</h2>
-                
-                <div class="form-group">
-                    <label>Select Data to Share</label>
-                    <div class="checkbox-group" id="share-scope">
-                        {% for category in categories %}
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="share-categories" value="{{ category }}" checked>
-                            {{ category | capitalize }}
-                        </label>
-                        {% endfor %}
+            <!-- History View -->
+            <div id="view-history" class="portal-view">
+                <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--sage-700); margin-bottom: 24px;">Medical History</h2>
+                <section class="card" id="access-logs-section">
+                    <h2>Access Log</h2>
+                    <p>See who has viewed your shared data</p>
+
+                    <table id="access-logs-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Viewer IP</th>
+                                <th>Scope Accessed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="access-logs-body">
+                        </tbody>
+                    </table>
+                    <p id="no-access-logs" style="display: none;">No access logs yet.</p>
+                </section>
+            </div>
+
+            <!-- Medications View -->
+            <div id="view-meds" class="portal-view">
+                <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--sage-700); margin-bottom: 24px;">Medications</h2>
+                <p style="color: var(--stone-600);">Your medication information will appear here once data is loaded.</p>
+            </div>
+
+            <!-- Share View -->
+            <div id="view-share" class="portal-view">
+                <section class="card">
+                    <h2>Share With Your Provider</h2>
+
+                    <div class="form-group">
+                        <label>Select Data to Share</label>
+                        <div class="checkbox-group" id="share-scope">
+                            {% for category in categories %}
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="share-categories" value="{{ category }}" checked>
+                                {{ category | capitalize }}
+                            </label>
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="expiry-hours">Token Expiry</label>
-                    <select id="expiry-hours">
-                        <option value="1">1 hour</option>
-                        <option value="24" selected>24 hours</option>
-                        <option value="72">3 days</option>
-                        <option value="168">1 week</option>
-                    </select>
-                </div>
-
-                <button id="create-token-btn" class="btn btn-primary">Create Share Token</button>
-
-                <div id="token-result" class="token-display" style="display: none;">
-                    <h4>Your Share Token</h4>
-                    <p>Give this token to your healthcare provider:</p>
-                    <div class="token-box">
-                        <code id="share-token"></code>
-                        <button id="copy-token-btn" class="btn-small">Copy</button>
+                    <div class="form-group">
+                        <label for="expiry-hours">Token Expiry</label>
+                        <select id="expiry-hours">
+                            <option value="1">1 hour</option>
+                            <option value="24" selected>24 hours</option>
+                            <option value="72">3 days</option>
+                            <option value="168">1 week</option>
+                        </select>
                     </div>
-                    <p class="token-expiry">Expires: <span id="token-expiry"></span></p>
-                    <p class="token-scope">Shared categories: <span id="token-scope"></span></p>
-                </div>
-            </section>
 
-            <section class="card" id="access-logs-section" style="display: none;">
-                <h2>Access Log</h2>
-                <p>See who has viewed your shared data</p>
-                
-                <table id="access-logs-table" class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Date/Time</th>
-                            <th>Viewer IP</th>
-                            <th>Scope Accessed</th>
-                        </tr>
-                    </thead>
-                    <tbody id="access-logs-body">
-                    </tbody>
-                </table>
-                <p id="no-access-logs" style="display: none;">No access logs yet.</p>
-            </section>
+                    <button id="create-token-btn" class="btn btn-primary">Create Share Token</button>
+
+                    <div id="token-result" class="token-display" style="display: none;">
+                        <h4>Your Share Token</h4>
+                        <p>Give this token to your healthcare provider:</p>
+                        <div class="token-box">
+                            <code id="share-token"></code>
+                            <button id="copy-token-btn" class="btn-small">Copy</button>
+                        </div>
+                        <p class="token-expiry">Expires: <span id="token-expiry"></span></p>
+                        <p class="token-scope">Shared categories: <span id="token-scope"></span></p>
+                    </div>
+                </section>
+            </div>
         </main>
 
-        <footer>
-            <p class="footer-disclaimer">{{ disclaimer }}</p>
-        </footer>
+        <!-- AI Summary Panel -->
+        <aside class="portal-ai-panel">
+            <div class="portal-ai-panel__header">
+                <div class="portal-ai-panel__icon">*</div>
+                <h2 class="portal-ai-panel__title">AI Summary</h2>
+            </div>
+
+            <div id="ai-panel-placeholder" class="portal-ai-card">
+                <p class="portal-ai-card__text">Load your medical data to generate an AI-powered health summary.</p>
+            </div>
+
+            <div id="ai-panel-loading" class="portal-ai-card" style="display: none;">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing your records...</p>
+                </div>
+            </div>
+
+            <div id="ai-panel-results" style="display: none;">
+                <div class="portal-ai-card">
+                    <p class="portal-ai-card__label">Clinical Summary</p>
+                    <p class="portal-ai-card__text" id="ai-clinician-summary"></p>
+                </div>
+
+                <div class="portal-ai-card">
+                    <p class="portal-ai-card__label">Your Health Summary</p>
+                    <p class="portal-ai-card__text" id="ai-patient-summary"></p>
+                </div>
+
+                <div class="portal-ai-card" id="ai-anomalies-card" style="display: none;">
+                    <p class="portal-ai-card__label">Items to Review</p>
+                    <div id="ai-anomalies-list"></div>
+                </div>
+            </div>
+
+            <button id="generate-ai-btn" class="btn btn-primary" style="width: 100%; margin-top: 16px;">
+                Generate Summary
+            </button>
+        </aside>
     </div>
 
     <script src="/static/charts.js"></script>
     <script>
+        // Navigation and app state
         let currentPatientId = null;
         let chartData = null;
 
+        // Navigation handling
+        const navLinks = document.querySelectorAll('.portal-nav__link[data-view]');
+        const views = document.querySelectorAll('.portal-view');
+        const navToggle = document.getElementById('nav-toggle');
+        const portalNav = document.getElementById('portal-nav');
+        const navOverlay = document.getElementById('nav-overlay');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const viewId = link.dataset.view;
+
+                // Update active nav
+                navLinks.forEach(l => l.classList.remove('portal-nav__link--active'));
+                link.classList.add('portal-nav__link--active');
+
+                // Update active view
+                views.forEach(v => v.classList.remove('portal-view--active'));
+                document.getElementById('view-' + viewId).classList.add('portal-view--active');
+
+                // Close mobile nav
+                portalNav.classList.remove('portal-nav--open');
+                navOverlay.classList.remove('portal-nav-overlay--visible');
+
+                // Update URL hash
+                window.location.hash = viewId;
+            });
+        });
+
+        // Mobile nav toggle
+        navToggle.addEventListener('click', () => {
+            portalNav.classList.toggle('portal-nav--open');
+            navOverlay.classList.toggle('portal-nav-overlay--visible');
+        });
+
+        navOverlay.addEventListener('click', () => {
+            portalNav.classList.remove('portal-nav--open');
+            navOverlay.classList.remove('portal-nav-overlay--visible');
+        });
+
+        // Handle initial hash
+        window.addEventListener('load', () => {
+            const hash = window.location.hash.slice(1) || 'home';
+            const link = document.querySelector('[data-view="' + hash + '"]');
+            if (link) link.click();
+        });
+
+        // Existing event listeners
         document.getElementById('load-sample-btn').addEventListener('click', loadSampleData);
         document.getElementById('upload-btn').addEventListener('click', () => document.getElementById('file-upload').click());
         document.getElementById('file-upload').addEventListener('change', uploadFile);
-        document.getElementById('generate-summary-btn').addEventListener('click', generateSummary);
+        document.getElementById('generate-ai-btn').addEventListener('click', generateSummary);
         document.getElementById('create-token-btn').addEventListener('click', createToken);
         document.getElementById('copy-token-btn').addEventListener('click', copyToken);
-
         document.getElementById('patient-name').addEventListener('input', checkExistingPatient);
 
         let debounceTimer;
         async function checkExistingPatient() {
             const name = document.getElementById('patient-name').value.trim();
             if (!name) return;
-            
+
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(async () => {
                 try {
-                    const response = await fetch(`/api/patient/lookup?name=${encodeURIComponent(name)}`);
+                    const response = await fetch('/api/patient/lookup?name=' + encodeURIComponent(name));
                     const data = await response.json();
-                    
+
                     if (data.success && data.patient) {
                         currentPatientId = data.patient.id;
                         if (data.records && data.records.length > 0) {
@@ -250,7 +388,7 @@
                     body: formData
                 });
                 const data = await response.json();
-                
+
                 if (data.success) {
                     currentPatientId = data.patient_id;
                     showStatus(data.message, 'success');
@@ -285,7 +423,7 @@
                     body: formData
                 });
                 const data = await response.json();
-                
+
                 if (data.success) {
                     currentPatientId = data.patient_id;
                     showStatus(data.message, 'success');
@@ -302,9 +440,9 @@
             if (!currentPatientId) return;
 
             try {
-                const response = await fetch(`/api/patient/${currentPatientId}/records`);
+                const response = await fetch('/api/patient/' + currentPatientId + '/records');
                 const data = await response.json();
-                
+
                 chartData = data.chart_data;
                 showDataSections(data);
             } catch (error) {
@@ -313,15 +451,33 @@
         }
 
         function showDataSections(data) {
-            document.getElementById('summary-section').style.display = 'block';
-            document.getElementById('charts-section').style.display = 'block';
-            document.getElementById('share-section').style.display = 'block';
-            document.getElementById('access-logs-section').style.display = 'block';
+            // Hide data input section after data loads
+            document.getElementById('data-input-section').style.display = 'none';
+
+            // Show home dashboard elements
+            const bmiCard = document.getElementById('home-bmi-chart-card');
+            const alertsSection = document.getElementById('home-alerts');
 
             if (data.chart_data) {
                 chartData = data.chart_data;
                 renderCharts(chartData);
+
+                // Also render mini BMI chart
+                if (chartData.bmi && chartData.bmi.length > 0) {
+                    bmiCard.style.display = 'block';
+                    renderMiniBMIChart(chartData.bmi);
+
+                    // Extract last visit date
+                    const lastEntry = chartData.bmi[chartData.bmi.length - 1];
+                    if (lastEntry && lastEntry.date) {
+                        document.getElementById('last-visit-date').textContent = lastEntry.date;
+                    }
+                }
             }
+
+            // Show AI panel placeholder change
+            document.getElementById('ai-panel-placeholder').querySelector('.portal-ai-card__text').textContent =
+                'Click "Generate Summary" to analyze your health records.';
 
             if (data.summary) {
                 displaySummary(data.summary);
@@ -330,6 +486,45 @@
             if (data.access_logs) {
                 displayAccessLogs(data.access_logs);
             }
+
+            // Show anomalies in alerts section if present
+            if (data.anomalies && data.anomalies.length > 0) {
+                alertsSection.style.display = 'block';
+                renderAnomalies(document.getElementById('alerts-content'), data.anomalies);
+            }
+        }
+
+        function renderMiniBMIChart(data) {
+            const ctx = document.getElementById('bmi-chart-mini');
+            if (!ctx) return;
+
+            // Simplified mini chart
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map(d => d.date),
+                    datasets: [{
+                        data: data.map(d => d.value),
+                        borderColor: 'rgb(93, 130, 104)',
+                        backgroundColor: 'rgba(93, 130, 104, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    }
+                }
+            });
         }
 
         async function generateSummary() {
@@ -338,48 +533,113 @@
                 return;
             }
 
-            document.getElementById('summary-loading').style.display = 'block';
-            document.getElementById('summary-results').style.display = 'none';
+            // Update AI panel state
+            document.getElementById('ai-panel-placeholder').style.display = 'none';
+            document.getElementById('ai-panel-loading').style.display = 'block';
+            document.getElementById('ai-panel-results').style.display = 'none';
 
             try {
-                const response = await fetch(`/api/patient/${currentPatientId}/generate-summary`, {
+                const response = await fetch('/api/patient/' + currentPatientId + '/generate-summary', {
                     method: 'POST'
                 });
                 const data = await response.json();
 
-                document.getElementById('summary-loading').style.display = 'none';
+                document.getElementById('ai-panel-loading').style.display = 'none';
 
                 if (data.success) {
                     displaySummary(data);
                 } else {
                     showStatus(data.error || 'Failed to generate summary', 'error');
+                    document.getElementById('ai-panel-placeholder').style.display = 'block';
                 }
             } catch (error) {
-                document.getElementById('summary-loading').style.display = 'none';
+                document.getElementById('ai-panel-loading').style.display = 'none';
+                document.getElementById('ai-panel-placeholder').style.display = 'block';
                 showStatus('Error generating summary: ' + error.message, 'error');
             }
         }
 
         function displaySummary(data) {
-            document.getElementById('summary-results').style.display = 'block';
-            document.getElementById('clinician-summary-text').textContent = data.clinician_summary || 'No clinical summary available';
-            document.getElementById('patient-summary-text').textContent = data.patient_summary || 'No patient summary available';
+            // Update AI panel
+            document.getElementById('ai-panel-placeholder').style.display = 'none';
+            document.getElementById('ai-panel-loading').style.display = 'none';
+            document.getElementById('ai-panel-results').style.display = 'block';
 
-            const anomaliesContainer = document.getElementById('anomalies-container');
-            const anomaliesList = document.getElementById('anomalies-list');
-            
+            document.getElementById('ai-clinician-summary').textContent =
+                data.clinician_summary || 'No clinical summary available';
+            document.getElementById('ai-patient-summary').textContent =
+                data.patient_summary || 'No patient summary available';
+
+            // Handle anomalies
+            const anomaliesCard = document.getElementById('ai-anomalies-card');
+            const anomaliesList = document.getElementById('ai-anomalies-list');
+
             if (data.anomalies && data.anomalies.length > 0) {
-                anomaliesContainer.style.display = 'block';
-                anomaliesList.innerHTML = data.anomalies.map(a => `
-                    <div class="anomaly-item severity-${a.severity}">
-                        <span class="anomaly-type">${a.type}</span>
-                        <span class="anomaly-severity">${a.severity}</span>
-                        <p>${a.description}</p>
-                    </div>
-                `).join('');
+                anomaliesCard.style.display = 'block';
+                renderAnomaliesCompact(anomaliesList, data.anomalies);
+
+                // Also update home alerts
+                const alertsSection = document.getElementById('home-alerts');
+                alertsSection.style.display = 'block';
+                renderAnomalies(document.getElementById('alerts-content'), data.anomalies);
             } else {
-                anomaliesContainer.style.display = 'none';
+                anomaliesCard.style.display = 'none';
             }
+        }
+
+        function renderAnomalies(container, anomalies) {
+            // Clear container safely
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            anomalies.forEach(a => {
+                const div = document.createElement('div');
+                div.className = 'anomaly-item severity-' + a.severity;
+                div.style.marginBottom = '12px';
+
+                const typeSpan = document.createElement('span');
+                typeSpan.className = 'anomaly-type';
+                typeSpan.textContent = a.type;
+
+                const severitySpan = document.createElement('span');
+                severitySpan.className = 'anomaly-severity';
+                severitySpan.textContent = a.severity;
+
+                const desc = document.createElement('p');
+                desc.textContent = a.description;
+
+                div.appendChild(typeSpan);
+                div.appendChild(severitySpan);
+                div.appendChild(desc);
+                container.appendChild(div);
+            });
+        }
+
+        function renderAnomaliesCompact(container, anomalies) {
+            // Clear container safely
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            anomalies.forEach(a => {
+                const div = document.createElement('div');
+                div.className = 'anomaly-item severity-' + a.severity;
+                div.style.cssText = 'margin: 8px 0; padding: 8px; border-radius: 6px; background: white;';
+
+                const typeSpan = document.createElement('span');
+                typeSpan.className = 'anomaly-type';
+                typeSpan.style.fontSize = '12px';
+                typeSpan.textContent = a.type;
+
+                const desc = document.createElement('p');
+                desc.style.cssText = 'margin: 4px 0 0; font-size: 12px; color: var(--stone-600);';
+                desc.textContent = a.description;
+
+                div.appendChild(typeSpan);
+                div.appendChild(desc);
+                container.appendChild(div);
+            });
         }
 
         async function createToken() {
@@ -396,7 +656,7 @@
             formData.append('expiry_hours', expiryHours);
 
             try {
-                const response = await fetch(`/api/patient/${currentPatientId}/create-token`, {
+                const response = await fetch('/api/patient/' + currentPatientId + '/create-token', {
                     method: 'POST',
                     body: formData
                 });
@@ -407,7 +667,7 @@
                     document.getElementById('share-token').textContent = data.token;
                     document.getElementById('token-expiry').textContent = new Date(data.expires_at).toLocaleString();
                     document.getElementById('token-scope').textContent = data.scope.join(', ');
-                    
+
                     loadAccessLogs();
                 }
             } catch (error) {
@@ -429,9 +689,9 @@
             if (!currentPatientId) return;
 
             try {
-                const response = await fetch(`/api/patient/${currentPatientId}/access-logs`);
+                const response = await fetch('/api/patient/' + currentPatientId + '/access-logs');
                 const data = await response.json();
-                
+
                 displayAccessLogs(data.logs || []);
             } catch (error) {
                 console.error('Error loading access logs:', error);
@@ -441,19 +701,33 @@
         function displayAccessLogs(logs) {
             const tbody = document.getElementById('access-logs-body');
             const noLogs = document.getElementById('no-access-logs');
-            
+
+            // Clear existing rows safely
+            while (tbody.firstChild) {
+                tbody.removeChild(tbody.firstChild);
+            }
+
             if (logs.length === 0) {
-                tbody.innerHTML = '';
                 noLogs.style.display = 'block';
             } else {
                 noLogs.style.display = 'none';
-                tbody.innerHTML = logs.map(log => `
-                    <tr>
-                        <td>${new Date(log.accessed_at).toLocaleString()}</td>
-                        <td>${log.viewer_ip}</td>
-                        <td>${log.scope.join(', ')}</td>
-                    </tr>
-                `).join('');
+                logs.forEach(log => {
+                    const tr = document.createElement('tr');
+
+                    const tdDate = document.createElement('td');
+                    tdDate.textContent = new Date(log.accessed_at).toLocaleString();
+
+                    const tdIp = document.createElement('td');
+                    tdIp.textContent = log.viewer_ip;
+
+                    const tdScope = document.createElement('td');
+                    tdScope.textContent = log.scope.join(', ');
+
+                    tr.appendChild(tdDate);
+                    tr.appendChild(tdIp);
+                    tr.appendChild(tdScope);
+                    tbody.appendChild(tr);
+                });
             }
         }
 

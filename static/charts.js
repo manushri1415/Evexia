@@ -311,6 +311,79 @@ function renderA1CChart(data) {
     });
 }
 
+// Mini chart for dashboard - simplified version for the home view
+let bmiChartMini = null;
+
+function renderMiniBMIChart(data) {
+    const ctx = document.getElementById('bmi-chart-mini');
+    if (!ctx) return;
+
+    if (bmiChartMini) {
+        bmiChartMini.destroy();
+    }
+
+    // Flatten all data points regardless of hospital
+    const allPoints = data.sort((a, b) => a.date.localeCompare(b.date));
+
+    bmiChartMini = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: allPoints.map(d => d.date),
+            datasets: [{
+                data: allPoints.map(d => d.value),
+                borderColor: 'rgb(93, 130, 104)',
+                backgroundColor: 'rgba(93, 130, 104, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 3,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: 'rgb(93, 130, 104)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(61, 56, 53, 0.95)',
+                    titleFont: { size: 12, weight: 600 },
+                    bodyFont: { size: 11 },
+                    padding: 8,
+                    cornerRadius: 6,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return `BMI: ${context.parsed.y.toFixed(1)}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: false,
+                    grid: { display: false }
+                },
+                y: {
+                    display: false,
+                    grid: { display: false }
+                }
+            },
+            elements: {
+                line: {
+                    tension: 0.4,
+                    borderWidth: 2
+                },
+                point: {
+                    radius: 3,
+                    hoverRadius: 5
+                }
+            }
+        }
+    });
+}
+
 function groupByHospital(data) {
     const hospitals = {};
 
