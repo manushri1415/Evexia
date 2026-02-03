@@ -242,7 +242,12 @@ async def get_access_logs(patient_id: int):
     })
 
 @app.post("/api/provider/access")
-async def provider_access(request: Request, token: str = Form(...)):
+async def provider_access(
+    request: Request,
+    token: str = Form(...),
+    provider_name: str = Form(None),
+    provider_org: str = Form(None)
+):
     token_data = db.get_share_token(token)
     
     if not token_data:
@@ -253,7 +258,7 @@ async def provider_access(request: Request, token: str = Form(...)):
         raise HTTPException(status_code=403, detail="Token has expired")
     
     client_ip = request.client.host if request.client else "unknown"
-    db.log_access(token_data['id'], client_ip)
+    db.log_access(token_data['id'], client_ip, provider_name, provider_org)
     
     patient = db.get_patient(token_data['patient_id'])
     scope = token_data['scope']
