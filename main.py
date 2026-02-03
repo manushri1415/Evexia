@@ -257,12 +257,15 @@ async def provider_access(
     if datetime.now() > expires_at:
         raise HTTPException(status_code=403, detail="Token has expired")
     
+    patient = db.get_patient(token_data['patient_id'])
+    if not patient:
+        return JSONResponse({"success": False, "error": "Patient not found"}, status_code=404)
+
     client_ip = request.client.host if request.client else "unknown"
     db.log_access(token_data['id'], client_ip, provider_name, provider_org)
-    
-    patient = db.get_patient(token_data['patient_id'])
+
     scope = token_data['scope']
-    
+
     records = db.get_patient_records(token_data['patient_id'], categories=scope)
     
     summary = db.get_summary(token_data['patient_id'])

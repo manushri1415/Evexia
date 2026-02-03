@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Dict, List, Any, Tuple
+from typing import Dict, List, Any, Tuple, Optional
 from datetime import datetime
 
 SAMPLE_DATA_DIR = "sample_data"
@@ -9,7 +9,7 @@ UPLOADS_DIR = "uploads"
 VALID_CATEGORIES = ["vitals", "labs", "meds", "medications", "encounters"]
 VALID_HOSPITALS = ["Hospital A", "Hospital B", "Hospital C"]
 
-def load_sample_data(hospitals: List[str] = None, categories: List[str] = None) -> List[Dict]:
+def load_sample_data(hospitals: Optional[List[str]] = None, categories: Optional[List[str]] = None) -> List[Dict]:
     if hospitals is None:
         hospitals = VALID_HOSPITALS
     

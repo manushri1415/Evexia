@@ -13,7 +13,7 @@ def get_connection():
 def init_db():
     conn = get_connection()
     cursor = conn.cursor()
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS patients (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -21,7 +21,7 @@ def init_db():
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS records (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,7 +34,7 @@ def init_db():
             FOREIGN KEY (patient_id) REFERENCES patients(id)
         )
     ''')
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS summaries (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,7 +46,7 @@ def init_db():
             FOREIGN KEY (patient_id) REFERENCES patients(id)
         )
     ''')
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS share_tokens (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,7 +58,7 @@ def init_db():
             FOREIGN KEY (patient_id) REFERENCES patients(id)
         )
     ''')
-    
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS access_logs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -70,7 +70,7 @@ def init_db():
             FOREIGN KEY (token_id) REFERENCES share_tokens(id)
         )
     ''')
-    
+
     conn.commit()
     conn.close()
 
@@ -79,6 +79,7 @@ def create_patient(name: str) -> int:
     cursor = conn.cursor()
     cursor.execute("INSERT INTO patients (name) VALUES (?)", (name,))
     patient_id = cursor.lastrowid
+    assert patient_id is not None
     conn.commit()
     conn.close()
     return patient_id
@@ -109,7 +110,7 @@ def get_or_create_patient(name: str) -> int:
         return patient['id']
     return create_patient(name)
 
-def add_record(patient_id: int, hospital: str, category: str, data: Dict, source_file: str = None) -> int:
+def add_record(patient_id: int, hospital: str, category: str, data: Dict, source_file: Optional[str] = None) -> int:
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
@@ -117,31 +118,32 @@ def add_record(patient_id: int, hospital: str, category: str, data: Dict, source
         (patient_id, hospital, category, json.dumps(data), source_file)
     )
     record_id = cursor.lastrowid
+    assert record_id is not None
     conn.commit()
     conn.close()
     return record_id
 
-def get_patient_records(patient_id: int, categories: List[str] = None, hospitals: List[str] = None) -> List[Dict]:
+def get_patient_records(patient_id: int, categories: Optional[List[str]] = None, hospitals: Optional[List[str]] = None) -> List[Dict]:
     conn = get_connection()
     cursor = conn.cursor()
-    
+
     query = "SELECT * FROM records WHERE patient_id = ?"
-    params = [patient_id]
-    
+    params: List[Any] = [patient_id]
+
     if categories:
         placeholders = ','.join('?' * len(categories))
         query += f" AND category IN ({placeholders})"
         params.extend(categories)
-    
+
     if hospitals:
         placeholders = ','.join('?' * len(hospitals))
         query += f" AND hospital IN ({placeholders})"
         params.extend(hospitals)
-    
+
     cursor.execute(query, params)
     rows = cursor.fetchall()
     conn.close()
-    
+
     result = []
     for row in rows:
         record = dict(row)
@@ -190,6 +192,7 @@ def create_share_token(patient_id: int, token: str, scope: List[str], expires_at
         (patient_id, token, json.dumps(scope), expires_at)
     )
     token_id = cursor.lastrowid
+    assert token_id is not None
     conn.commit()
     conn.close()
     return token_id
@@ -213,7 +216,7 @@ def get_patient_tokens(patient_id: int) -> List[Dict]:
     cursor.execute("SELECT * FROM share_tokens WHERE patient_id = ? ORDER BY created_at DESC", (patient_id,))
     rows = cursor.fetchall()
     conn.close()
-    
+
     result = []
     for row in rows:
         token_data = dict(row)
@@ -222,7 +225,7 @@ def get_patient_tokens(patient_id: int) -> List[Dict]:
         result.append(token_data)
     return result
 
-def log_access(token_id: int, viewer_ip: str, provider_name: str = None, provider_org: str = None):
+def log_access(token_id: int, viewer_ip: str, provider_name: Optional[str] = None, provider_org: Optional[str] = None):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute(
@@ -234,7 +237,7 @@ def get_patient_access_logs(patient_id: int) -> List[Dict]:
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT al.*, st.token, st.scope_json 
+        SELECT al.*, st.token, st.scope_json
         FROM access_logs al
         JOIN share_tokens st ON al.token_id = st.id
         WHERE st.patient_id = ?
@@ -242,7 +245,7 @@ def get_patient_access_logs(patient_id: int) -> List[Dict]:
     ''', (patient_id,))
     rows = cursor.fetchall()
     conn.close()
-    
+
     result = []
     for row in rows:
         log = dict(row)

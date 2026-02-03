@@ -67,6 +67,7 @@ Focus on:
 - Any data quality issues or discrepancies between hospitals
 """
 
+    assert client is not None  # Guaranteed by AI_AVAILABLE check
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
@@ -98,8 +99,7 @@ def generate_mock_summaries(records: List[Dict]) -> Dict[str, Any]:
     for record in records:
         category = record.get('category', '').lower()
         data = record.get('data', {})
-        hospital = record.get('hospital', 'Unknown')
-        
+
         if category == 'vitals':
             vitals.extend(data.get('entries', []))
         elif category == 'labs':
@@ -126,7 +126,7 @@ def generate_mock_summaries(records: List[Dict]) -> Dict[str, Any]:
                 "severity": "medium"
             })
     
-    a1c_values = [l.get('a1c') for l in labs if l.get('a1c')]
+    a1c_values = [lab.get('a1c') for lab in labs if lab.get('a1c')]
     if a1c_values:
         if any(a > 6.5 for a in a1c_values):
             anomalies.append({
@@ -135,7 +135,7 @@ def generate_mock_summaries(records: List[Dict]) -> Dict[str, Any]:
                 "severity": "high"
             })
     
-    chol_values = [l.get('total_cholesterol') for l in labs if l.get('total_cholesterol')]
+    chol_values = [lab.get('total_cholesterol') for lab in labs if lab.get('total_cholesterol')]
     if chol_values:
         if any(c > 240 for c in chol_values):
             anomalies.append({
@@ -169,8 +169,8 @@ def generate_mock_summaries(records: List[Dict]) -> Dict[str, Any]:
             clinician_bullets.append(f"Latest BMI: {latest_bmi.get('bmi')}")
     
     if labs:
-        latest_a1c = next((l for l in reversed(labs) if l.get('a1c')), None)
-        latest_chol = next((l for l in reversed(labs) if l.get('total_cholesterol')), None)
+        latest_a1c = next((lab for lab in reversed(labs) if lab.get('a1c')), None)
+        latest_chol = next((lab for lab in reversed(labs) if lab.get('total_cholesterol')), None)
         if latest_a1c:
             clinician_bullets.append(f"Latest A1C: {latest_a1c.get('a1c')}%")
         if latest_chol:
