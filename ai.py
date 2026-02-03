@@ -78,14 +78,17 @@ Focus on:
         max_tokens=2000
     )
     
-    content = response.choices[0].message.content.strip()
+    raw_content = response.choices[0].message.content
+    if raw_content is None:
+        raise ValueError("AI returned empty response")
+    content = raw_content.strip()
     if content.startswith("```json"):
         content = content[7:]
     if content.startswith("```"):
         content = content[3:]
     if content.endswith("```"):
         content = content[:-3]
-    
+
     result = json.loads(content)
     result["disclaimer"] = DISCLAIMER
     return result

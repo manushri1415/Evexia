@@ -83,15 +83,19 @@ async def upload_data(
 ):
     if not patient_name:
         raise HTTPException(status_code=400, detail="Patient name is required")
-    
+
+    if not file.filename:
+        raise HTTPException(status_code=400, detail="Filename is required")
+
     if not file.filename.endswith('.json'):
         raise HTTPException(status_code=400, detail="Only JSON files are accepted")
-    
+
     content = await file.read()
-    
-    ingest.save_uploaded_file(content, file.filename)
-    
-    records, errors = ingest.parse_uploaded_json(content, file.filename)
+    filename = file.filename  # Narrowed to str after check above
+
+    ingest.save_uploaded_file(content, filename)
+
+    records, errors = ingest.parse_uploaded_json(content, filename)
     
     if errors:
         raise HTTPException(status_code=400, detail="; ".join(errors))
