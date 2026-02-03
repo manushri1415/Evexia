@@ -320,6 +320,7 @@ header h1 {
     margin-bottom: 16px;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--stone-200);
+    text-wrap: balance;
 }
 
 /* === Role Cards (Landing Page) === */
@@ -379,6 +380,7 @@ header h1 {
     margin-bottom: 12px;
     padding-bottom: 0;
     letter-spacing: -0.01em;
+    text-wrap: balance;
 }
 
 .role-card p {
@@ -477,6 +479,26 @@ header h1 {
     background: linear-gradient(135deg, var(--sage-100) 0%, var(--sage-200) 100%);
     border-color: var(--sage-400);
     color: var(--sage-700);
+}
+
+/* Focus visible utilities for keyboard navigation */
+.btn:focus-visible,
+.btn-small:focus-visible,
+.tab-btn:focus-visible {
+    outline: 2px solid var(--sage-500);
+    outline-offset: 2px;
+}
+
+.portal-nav__link:focus-visible {
+    outline: 2px solid var(--sage-400);
+    outline-offset: -2px;
+    background: var(--sage-50);
+}
+
+.back-link:focus-visible,
+.checkbox-label:focus-visible {
+    outline: 2px solid var(--sage-500);
+    outline-offset: 2px;
 }
 
 /* === Forms === */
@@ -869,6 +891,7 @@ header h1 {
     border-bottom: 1px solid var(--stone-200);
     color: var(--stone-700);
     font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
 }
 
 .data-table tr:last-child td {
