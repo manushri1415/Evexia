@@ -1,12 +1,12 @@
 {
-  "hospital": "Hospital A",
+  "hospital": "Banner Health",
   "hospital_location": "Phoenix, Arizona",
   "patient_id": "DEMO-001",
   "records": {
     "vitals": {
       "entries": [
         {
-          "date": "2024-01-15",
+          "date": "02-04-2026",
           "blood_pressure": "128/82",
           "heart_rate": 72,
           "weight_lbs": 185,
@@ -16,7 +16,7 @@
           "respiratory_rate": 16
         },
         {
-          "date": "2024-04-20",
+          "date": "12-16-2025",
           "blood_pressure": "132/85",
           "heart_rate": 75,
           "weight_lbs": 190,
@@ -26,7 +26,7 @@
           "respiratory_rate": 16
         },
         {
-          "date": "2024-07-10",
+          "date": "10-26-2025",
           "blood_pressure": "130/84",
           "heart_rate": 70,
           "weight_lbs": 188,
@@ -36,12 +36,12 @@
           "respiratory_rate": 15
         },
         {
-          "date": "2024-10-05",
+          "date": "09-28-2025",
           "blood_pressure": "126/80",
           "heart_rate": 68,
-          "weight_lbs": 182,
+          "weight_lbs": 187,
           "height_inches": 70,
-          "bmi": 26.1,
+          "bmi": 27.0,
           "temperature": 98.5,
           "respiratory_rate": 16
         }
@@ -50,7 +50,7 @@
     "labs": {
       "entries": [
         {
-          "date": "2024-01-15",
+          "date": "10-26-2025",
           "test_name": "Comprehensive Metabolic Panel",
           "total_cholesterol": 215,
           "ldl": 135,
@@ -58,18 +58,18 @@
           "triglycerides": 160,
           "a1c": 72,
           "fasting_glucose": 108,
-          "creatinine": 1.0,
+          "creatinine": 1.6,
           "bun": 18
         },
         {
-          "date": "2024-07-10",
+          "date": "08-13-2025",
           "test_name": "Lipid Panel + A1C",
           "total_cholesterol": 198,
           "ldl": 118,
           "hdl": 52,
           "triglycerides": 140,
           "a1c": 5.9,
-          "fasting_glucose": 102
+          "fasting_glucose": 110
         }
       ]
     },
@@ -107,7 +107,7 @@
     "encounters": {
       "entries": [
         {
-          "date": "2024-01-15",
+          "date": "02-04-2026",
           "type": "Annual Physical",
           "provider": "Dr. Martinez",
           "department": "Internal Medicine",
@@ -115,7 +115,7 @@
           "notes": "Patient presents for routine annual physical. Discussed weight management and prediabetes risk."
         },
         {
-          "date": "2024-04-20",
+          "date": "12-16-2025",
           "type": "Follow-up",
           "provider": "Dr. Martinez",
           "department": "Internal Medicine",
@@ -123,7 +123,7 @@
           "notes": "Follow-up for blood pressure and cholesterol medications. Patient tolerating well."
         },
         {
-          "date": "2024-07-10",
+          "date": "10-26-2025",
           "type": "Lab Review",
           "provider": "Dr. Chen",
           "department": "Endocrinology",
