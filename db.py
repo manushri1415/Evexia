@@ -18,6 +18,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS patients (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
+            date_of_birth TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -74,10 +75,25 @@ def init_db():
     conn.commit()
     conn.close()
 
-def create_patient(name: str) -> int:
+def migrate_db():
+    """Add missing columns to existing database tables."""
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO patients (name) VALUES (?)", (name,))
+    cursor.execute("PRAGMA table_info(patients)")
+    columns = [col[1] for col in cursor.fetchall()]
+    if 'date_of_birth' not in columns:
+        cursor.execute("ALTER TABLE patients ADD COLUMN date_of_birth TEXT")
+        conn.commit()
+    conn.close()
+
+
+def create_patient(name: str, date_of_birth: Optional[str] = None) -> int:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO patients (name, date_of_birth) VALUES (?, ?)",
+        (name, date_of_birth)
+    )
     patient_id = cursor.lastrowid
     assert patient_id is not None
     conn.commit()
@@ -104,11 +120,53 @@ def get_patient_by_name(name: str) -> Optional[Dict]:
         return dict(row)
     return None
 
-def get_or_create_patient(name: str) -> int:
+def get_or_create_patient(name: str, date_of_birth: Optional[str] = None) -> int:
     patient = get_patient_by_name(name)
     if patient:
+        # Update DOB if provided and patient doesn't have one
+        if date_of_birth and not patient.get('date_of_birth'):
+            update_patient_dob(patient['id'], date_of_birth)
         return patient['id']
-    return create_patient(name)
+    return create_patient(name, date_of_birth)
+
+
+def update_patient_dob(patient_id: int, date_of_birth: str) -> bool:
+    """Update a patient's date of birth."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE patients SET date_of_birth = ? WHERE id = ?",
+        (date_of_birth, patient_id)
+    )
+    affected = cursor.rowcount
+    conn.commit()
+    conn.close()
+    return affected > 0
+
+
+def verify_patient_identity(patient_id: int, name: str, date_of_birth: str) -> Dict[str, Any]:
+    """Verify patient identity by checking name and DOB match.
+
+    Returns dict with 'success' bool and 'error' str if verification fails.
+    """
+    patient = get_patient(patient_id)
+    if not patient:
+        return {"success": False, "error": "Patient not found"}
+
+    if not patient.get('date_of_birth'):
+        return {"success": False, "error": "Patient verification unavailable - no DOB on record"}
+
+    # Normalize names for comparison (case-insensitive, strip whitespace)
+    stored_name = patient['name'].strip().lower()
+    provided_name = name.strip().lower()
+
+    if stored_name != provided_name:
+        return {"success": False, "error": "Patient name does not match"}
+
+    if patient['date_of_birth'] != date_of_birth:
+        return {"success": False, "error": "Date of birth does not match"}
+
+    return {"success": True}
 
 def add_record(patient_id: int, hospital: str, category: str, data: Dict, source_file: Optional[str] = None) -> int:
     conn = get_connection()
@@ -255,3 +313,4 @@ def get_patient_access_logs(patient_id: int) -> List[Dict]:
     return result
 
 init_db()
+migrate_db()

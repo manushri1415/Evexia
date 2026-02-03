@@ -9,41 +9,54 @@ UPLOADS_DIR = "uploads"
 VALID_CATEGORIES = ["vitals", "labs", "meds", "medications", "encounters"]
 VALID_HOSPITALS = ["Banner Health", "Mayo Clinic", "Phoenician Medical Center"]
 
-def load_sample_data(hospitals: Optional[List[str]] = None, categories: Optional[List[str]] = None) -> List[Dict]:
+def load_sample_data(hospitals: Optional[List[str]] = None, categories: Optional[List[str]] = None) -> Dict[str, Any]:
+    """Load sample data from JSON files.
+
+    Returns dict with 'records' list and 'patient_info' dict (name, date_of_birth).
+    """
     if hospitals is None:
         hospitals = VALID_HOSPITALS
-    
+
     if categories is None:
         categories = VALID_CATEGORIES
-    
+
     records = []
-    
+    patient_info: Optional[Dict[str, str]] = None
+
     if not os.path.exists(SAMPLE_DATA_DIR):
-        return records
-    
+        return {"records": records, "patient_info": patient_info}
+
     for filename in os.listdir(SAMPLE_DATA_DIR):
         if not filename.endswith('.json'):
             continue
-        
+
         filepath = os.path.join(SAMPLE_DATA_DIR, filename)
         try:
             with open(filepath, 'r') as f:
                 data = json.load(f)
-            
+
             hospital = data.get('hospital', 'Unknown')
             if hospital not in hospitals:
                 continue
-            
+
+            # Extract patient info from first file that has it
+            if patient_info is None and 'patient' in data:
+                patient_data = data['patient']
+                patient_info = {
+                    "name": patient_data.get('name'),
+                    "date_of_birth": patient_data.get('date_of_birth')
+                }
+
             for category, category_data in data.get('records', {}).items():
                 if category.lower() in [c.lower() for c in categories]:
                     normalized = normalize_record(hospital, category, category_data, filename)
                     records.append(normalized)
-        
+
         except json.JSONDecodeError as e:
             print(f"Error parsing {filename}: {e}")
             continue
-    
-    return records
+
+    return {"records": records, "patient_info": patient_info}
 
 def parse_uploaded_json(content: bytes, filename: str) -> Tuple[List[Dict], List[str]]:
     errors = []

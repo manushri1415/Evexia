@@ -1,4 +1,5 @@
 import os
+import re
 import secrets
 from datetime import datetime, timedelta
 from typing import List, Optional
@@ -50,13 +51,18 @@ async def load_sample_data(
 ):
     if not patient_name:
         raise HTTPException(status_code=400, detail="Patient name is required")
-    
-    patient_id = db.get_or_create_patient(patient_name)
-    
+
+    # Load sample data (returns dict with 'records' and 'patient_info')
+    sample_data = ingest.load_sample_data(hospitals=hospitals, categories=categories)
+    records = sample_data.get('records', [])
+    patient_info = sample_data.get('patient_info')
+
+    # Get or create patient with DOB from sample data if available
+    date_of_birth = patient_info.get('date_of_birth') if patient_info else None
+    patient_id = db.get_or_create_patient(patient_name, date_of_birth)
+
     db.clear_patient_records(patient_id)
-    
-    records = ingest.load_sample_data(hospitals=hospitals, categories=categories)
-    
+
     for record in records:
         db.add_record(
             patient_id=patient_id,
@@ -65,9 +71,9 @@ async def load_sample_data(
             data=record['data'],
             source_file=record.get('source_file')
         )
-    
+
     anomalies = ingest.detect_anomalies(records)
-    
+
     return JSONResponse({
         "success": True,
         "patient_id": patient_id,
@@ -249,36 +255,69 @@ async def get_access_logs(patient_id: int):
 async def provider_access(
     request: Request,
     token: str = Form(...),
-    provider_name: str = Form(None),
-    provider_org: str = Form(None)
+    patient_name: str = Form(...),
+    date_of_birth: str = Form(...)
 ):
+    # Validate DOB format (YYYY-MM-DD)
+    dob_pattern = r'^\d{4}-\d{2}-\d{2}$'
+    if not re.match(dob_pattern, date_of_birth):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid date of birth format. Use YYYY-MM-DD"
+        )
+
+    # Validate DOB is not in the future
+    try:
+        dob_date = datetime.strptime(date_of_birth, '%Y-%m-%d')
+        if dob_date > datetime.now():
+            raise HTTPException(
+                status_code=400,
+                detail="Date of birth cannot be in the future"
+            )
+    except ValueError:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid date of birth. Use YYYY-MM-DD format"
+        )
+
+    # Validate token exists
     token_data = db.get_share_token(token)
-    
     if not token_data:
         raise HTTPException(status_code=404, detail="Invalid or expired token")
-    
+
+    # Check token expiration
     expires_at = datetime.fromisoformat(token_data['expires_at'])
     if datetime.now() > expires_at:
         raise HTTPException(status_code=403, detail="Token has expired")
-    
+
+    # Verify patient identity
+    verification = db.verify_patient_identity(
+        token_data['patient_id'],
+        patient_name,
+        date_of_birth
+    )
+    if not verification['success']:
+        raise HTTPException(status_code=403, detail=verification['error'])
+
     patient = db.get_patient(token_data['patient_id'])
     if not patient:
-        return JSONResponse({"success": False, "error": "Patient not found"}, status_code=404)
+        raise HTTPException(status_code=404, detail="Patient not found")
 
     client_ip = request.client.host if request.client else "unknown"
-    db.log_access(token_data['id'], client_ip, provider_name, provider_org)
+    db.log_access(token_data['id'], client_ip, patient_name, None)
 
     scope = token_data['scope']
 
     records = db.get_patient_records(token_data['patient_id'], categories=scope)
-    
+
     summary = db.get_summary(token_data['patient_id'])
-    
+
     chart_data = ingest.extract_chart_data(records)
-    
+
     return JSONResponse({
         "success": True,
         "patient_name": patient['name'],
+        "date_of_birth": patient.get('date_of_birth'),
         "scope": scope,
         "records": records,
         "summary": summary,

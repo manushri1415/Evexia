@@ -1,4 +1,3 @@
-{% from "components/logo.html" import full as logo_full %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,41 +6,36 @@
     <title>Provider Portal - Evexia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/provider.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="provider-portal">
+    <header class="provider-header">
+        <a href="/" class="provider-header__back" aria-label="Back to home">&larr;</a>
+        <div class="provider-header__logo" aria-hidden="true"></div>
+    </header>
+
     <div class="container">
-        <header>
-            <a href="/" class="back-link">&larr; Back to Home</a>
-            {{ logo_full() }}
-            <p class="subtitle">Provider Portal</p>
-            <p class="tagline">Access patient records with share token</p>
-        </header>
-
-        <div class="disclaimer-banner">
-            {{ disclaimer }}
-        </div>
-
         <main>
             <section class="card" id="token-input-section">
-                <h2>Enter Provider Information and Share Token</h2>
+                <h2>Patient information:</h2>
 
-                <div class="form-group">
-                    <label for="provider-name">Your Name</label>
-                    <input type="text" id="provider-name" name="provider_name" autocomplete="name" placeholder="Enter your full name" required>
+                <div class="provider-form-row">
+                    <label for="patient-name">Full Name:</label>
+                    <input type="text" id="patient-name" name="patient_name" autocomplete="name" required>
                 </div>
-                <div class="form-group">
-                    <label for="provider-org">Organization</label>
-                    <input type="text" id="provider-org" name="provider_org" autocomplete="organization" placeholder="Enter your clinic or hospital name" required>
+                <div class="provider-form-row">
+                    <label for="patient-dob">Date of Birth:</label>
+                    <input type="text" id="patient-dob" name="date_of_birth" placeholder="YYYY-MM-DD" required>
                 </div>
-                <div class="form-group">
-                    <label for="access-token">Share Token</label>
-                    <input type="text" id="access-token" name="access_token" placeholder="Paste the patient's share token here" required>
+                <div class="provider-form-row">
+                    <label for="access-token">Shared Token:</label>
+                    <input type="text" id="access-token" name="access_token" required>
                 </div>
 
-                <button id="access-btn" class="btn btn-primary">Access Records</button>
+                <button id="access-btn" class="provider-btn">Submit</button>
 
                 <div id="access-status" class="status-message" aria-live="polite" style="display: none;"></div>
             </section>
@@ -54,6 +48,10 @@
                         <p id="patient-name-display"></p>
                     </div>
                     <div class="info-item">
+                        <label>Date of Birth</label>
+                        <p id="patient-dob-display"></p>
+                    </div>
+                    <div class="info-item">
                         <label>Authorized Categories</label>
                         <p id="scope-display"></p>
                     </div>
@@ -62,7 +60,7 @@
 
             <section class="card" id="summary-section" style="display: none;">
                 <h2>Patient Summary</h2>
-                
+
                 <div class="summary-card clinician-summary">
                     <h3>Clinical Summary</h3>
                     <pre id="clinician-summary-text"></pre>
@@ -81,7 +79,7 @@
 
             <section class="card" id="charts-section" style="display: none;">
                 <h2>Health Metrics</h2>
-                
+
                 <div class="charts-grid">
                     <div class="chart-container" id="bmi-chart-container" style="display: none;">
                         <h3>BMI Trend</h3>
@@ -100,7 +98,7 @@
 
             <section class="card" id="records-section" style="display: none;">
                 <h2>Medical Records</h2>
-                
+
                 <div class="records-tabs" role="tablist">
                     <button class="tab-btn active" data-category="all" role="tab" aria-selected="true">All</button>
                     <button class="tab-btn" data-category="vitals" role="tab" aria-selected="false">Vitals</button>
@@ -139,36 +137,41 @@
         });
 
         async function accessRecords() {
-            const providerName = document.getElementById('provider-name').value.trim();
-            const providerOrg = document.getElementById('provider-org').value.trim();
+            const patientName = document.getElementById('patient-name').value.trim();
+            const patientDob = document.getElementById('patient-dob').value.trim();
             const token = document.getElementById('access-token').value.trim();
-            
-             
-            if (!providerName) {
-                showStatus('Please enter your name', 'error');
+
+            if (!patientName) {
+                showStatus('Please enter the patient\'s full name', 'error');
                 return;
             }
-            if (!providerOrg) {
-                showStatus('Please enter your organization', 'error');
+            if (!patientDob) {
+                showStatus('Please enter the patient\'s date of birth', 'error');
+                return;
+            }
+            // Validate DOB format
+            const dobPattern = /^\d{4}-\d{2}-\d{2}$/;
+            if (!dobPattern.test(patientDob)) {
+                showStatus('Date of birth must be in YYYY-MM-DD format', 'error');
                 return;
             }
             if (!token) {
-                showStatus('Please enter a share token', 'error');
+                showStatus('Please enter the shared token', 'error');
                 return;
             }
 
             const formData = new FormData();
             formData.append('token', token);
-            formData.append('provider_name', providerName);
-            formData.append('provider_org', providerOrg);
+            formData.append('patient_name', patientName);
+            formData.append('date_of_birth', patientDob);
 
             try {
-                showStatus('Verifying token...', 'info');
+                showStatus('Verifying credentials...', 'info');
                 const response = await fetch('/api/provider/access', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (!response.ok) {
                     const error = await response.json();
                     showStatus(error.detail || 'Access denied', 'error');
@@ -191,8 +194,9 @@
         function displayPatientData(data) {
             document.getElementById('patient-info-section').style.display = 'block';
             document.getElementById('patient-name-display').textContent = data.patient_name;
+            document.getElementById('patient-dob-display').textContent = data.date_of_birth || 'Not on file';
             document.getElementById('scope-display').textContent = data.scope.join(', ');
-            
+
             authorizedScope = data.scope;
             allRecords = data.records;
 
@@ -205,12 +209,12 @@
 
             if (data.summary) {
                 document.getElementById('summary-section').style.display = 'block';
-                document.getElementById('clinician-summary-text').textContent = 
+                document.getElementById('clinician-summary-text').textContent =
                     data.summary.clinician_summary || 'No clinical summary available';
 
                 const anomaliesContainer = document.getElementById('anomalies-container');
                 const anomaliesList = document.getElementById('anomalies-list');
-                
+
                 if (data.summary.anomalies && data.summary.anomalies.length > 0) {
                     anomaliesContainer.style.display = 'block';
                     while (anomaliesList.firstChild) {
@@ -241,7 +245,7 @@
 
             if (data.chart_data) {
                 document.getElementById('charts-section').style.display = 'block';
-                
+
                 if (data.chart_data.bmi && data.chart_data.bmi.length > 0 && authorizedScope.includes('vitals')) {
                     document.getElementById('bmi-chart-container').style.display = 'block';
                 }
@@ -251,7 +255,7 @@
                 if (data.chart_data.a1c && data.chart_data.a1c.length > 0 && authorizedScope.includes('labs')) {
                     document.getElementById('a1c-chart-container').style.display = 'block';
                 }
-                
+
                 renderCharts(data.chart_data);
             }
 

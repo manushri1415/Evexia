@@ -1,0 +1,409 @@
+/* Provider Portal - Minimal Corporate Medical Design
+   Overrides for body.provider-portal */
+
+body.provider-portal {
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+/* Minimal teal header bar */
+.provider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0a3d42;
+    padding: 16px 24px;
+    margin-bottom: 40px;
+}
+
+.provider-header__back {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.provider-header__back:hover {
+    opacity: 1;
+}
+
+.provider-header__logo {
+    width: 44px;
+    height: 44px;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+/* Override container */
+body.provider-portal .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+}
+
+/* Hide default header and disclaimer banner */
+body.provider-portal > .container > header {
+    display: none;
+}
+
+body.provider-portal .disclaimer-banner {
+    display: none;
+}
+
+/* Strip card decorations */
+body.provider-portal .card {
+    background: #ffffff;
+    box-shadow: none;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 32px;
+    margin: 0 24px 24px;
+}
+
+body.provider-portal .card h2 {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0 0 24px;
+    letter-spacing: 0;
+    text-transform: none;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+body.provider-portal .card h2::after {
+    display: none;
+}
+
+/* Inline form layout */
+.provider-form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.provider-form-row label {
+    flex: 0 0 120px;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #333333;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.provider-form-row input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #ffffff;
+    transition: border-color 0.2s;
+}
+
+.provider-form-row input:focus {
+    outline: none;
+    border-color: #0a3d42;
+}
+
+.provider-form-row input::placeholder {
+    color: #999999;
+}
+
+/* Flat teal button */
+.provider-btn {
+    background: #0a3d42;
+    color: #ffffff;
+    padding: 12px 32px;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 8px;
+}
+
+.provider-btn:hover {
+    background: #0c4a50;
+}
+
+.provider-btn:active {
+    background: #083035;
+}
+
+/* Status message */
+body.provider-portal .status-message {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+body.provider-portal .status-message.info {
+    background: #f0f7ff;
+    color: #0066cc;
+    border: 1px solid #cce0ff;
+}
+
+body.provider-portal .status-message.success {
+    background: #f0fff4;
+    color: #0a6b3c;
+    border: 1px solid #c6f6d5;
+}
+
+body.provider-portal .status-message.error {
+    background: #fff5f5;
+    color: #c53030;
+    border: 1px solid #fed7d7;
+}
+
+/* Post-validation sections - minimal styling */
+body.provider-portal .patient-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+body.provider-portal .info-item label {
+    display: block;
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 4px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+body.provider-portal .info-item p {
+    font-size: 16px;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+/* Summary sections */
+body.provider-portal .summary-card {
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+body.provider-portal .summary-card h3 {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 12px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+body.provider-portal .summary-card pre {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333333;
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+body.provider-portal .disclaimer-inline {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #92400e;
+    margin-top: 16px;
+}
+
+/* Anomalies */
+body.provider-portal .anomaly-item {
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    border-left: 3px solid;
+}
+
+body.provider-portal .anomaly-item.severity-high {
+    background: #fff5f5;
+    border-left-color: #c53030;
+}
+
+body.provider-portal .anomaly-item.severity-medium {
+    background: #fffbeb;
+    border-left-color: #d69e2e;
+}
+
+body.provider-portal .anomaly-item.severity-low {
+    background: #f0fff4;
+    border-left-color: #38a169;
+}
+
+/* Charts section */
+body.provider-portal .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+body.provider-portal .chart-container {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+body.provider-portal .chart-container h3 {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a1a;
+    margin: 0 0 12px;
+    text-transform: none;
+}
+
+/* Records section */
+body.provider-portal .records-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+body.provider-portal .tab-btn {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-size: 14px;
+    color: #666666;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+body.provider-portal .tab-btn:hover {
+    border-color: #0a3d42;
+    color: #0a3d42;
+}
+
+body.provider-portal .tab-btn.active {
+    background: #0a3d42;
+    border-color: #0a3d42;
+    color: #ffffff;
+}
+
+body.provider-portal .record-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+body.provider-portal .record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+body.provider-portal .record-hospital {
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+body.provider-portal .record-category {
+    font-size: 12px;
+    color: #ffffff;
+    background: #0a3d42;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: capitalize;
+}
+
+body.provider-portal .entry {
+    padding: 8px 0;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+body.provider-portal .entry:last-child {
+    border-bottom: none;
+}
+
+body.provider-portal .entry-date {
+    font-size: 12px;
+    color: #666666;
+    margin-bottom: 4px;
+}
+
+body.provider-portal .entry-details {
+    font-size: 14px;
+    color: #333333;
+}
+
+body.provider-portal .entry-details span {
+    display: inline-block;
+    margin-right: 16px;
+}
+
+body.provider-portal .entry-notes {
+    font-size: 13px;
+    color: #666666;
+    font-style: italic;
+    margin-top: 8px;
+}
+
+/* Footer */
+body.provider-portal footer {
+    margin-top: 40px;
+    padding: 20px 24px;
+    border-top: 1px solid #e5e5e5;
+    background: #f9f9f9;
+}
+
+body.provider-portal .footer-disclaimer {
+    font-size: 11px;
+    color: #666666;
+    margin: 0 0 8px;
+}
+
+body.provider-portal .access-note {
+    font-size: 12px;
+    color: #0a3d42;
+    margin: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+    .provider-form-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+
+    .provider-form-row label {
+        flex: none;
+    }
+
+    body.provider-portal .card {
+        margin: 0 16px 16px;
+        padding: 20px;
+    }
+
+    body.provider-portal .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
