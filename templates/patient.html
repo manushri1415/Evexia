@@ -51,6 +51,13 @@
                 </svg>
                 <span>Medical History</span>
             </a>
+            <a href="#access" class="portal-nav__link" data-view="access">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+
+                <span>Access Log</span>
+            </a>
             <a href="#meds" class="portal-nav__link" data-view="meds">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
@@ -167,6 +174,14 @@
             <!-- History View -->
             <div id="view-history" class="portal-view">
                 <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); color: var(--sage-700); margin-bottom: 24px;">Medical History</h2>
+                <section class="dashboard-card dashboard-card--gray" id="history-panel">
+                <h3 class="dashboard-card__label">Patient Medical History</h3>
+                <div id="history-records" class="history-content"></div>
+            </section>
+            </div>
+
+            <!-- Access Logs -->
+            <div id="view-access" class="portal-view">
                 <section class="card" id="access-logs-section">
                     <h2>Access Log</h2>
                     <p>See who has viewed your shared data</p>
@@ -177,6 +192,8 @@
                                 <th>Date/Time</th>
                                 <th>Viewer IP</th>
                                 <th>Scope Accessed</th>
+                                <th>Provider Name</th>
+                                <th>Organization</th>
                             </tr>
                         </thead>
                         <tbody id="access-logs-body">
