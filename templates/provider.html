@@ -1,3 +1,4 @@
+{% from "components/logo.html" import full as logo_full %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +15,9 @@
     <div class="container">
         <header>
             <a href="/" class="back-link">&larr; Back to Home</a>
-            <h1>Provider Portal</h1>
-            <p class="subtitle">Access patient records with share token</p>
+            {{ logo_full() }}
+            <p class="subtitle">Provider Portal</p>
+            <p class="tagline">Access patient records with share token</p>
         </header>
 
         <div class="disclaimer-banner">

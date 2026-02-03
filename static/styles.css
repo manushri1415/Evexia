@@ -227,6 +227,44 @@ header h1 {
     line-height: 1.1;
 }
 
+/* === Logo Component === */
+.logo {
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--sage-600);
+}
+
+.logo--full {
+    width: 240px;
+    height: auto;
+    max-width: 100%;
+}
+
+.logo--compact {
+    width: 140px;
+    height: auto;
+}
+
+.logo--white {
+    color: white;
+}
+
+.logo--icon {
+    width: 40px;
+    height: 40px;
+}
+
+/* Logo in landing page header */
+header .logo--full {
+    margin-bottom: 12px;
+}
+
+/* Logo in portal header */
+.portal-header .logo--compact {
+    width: 130px;
+    color: white;
+}
+
 .subtitle {
     font-family: var(--font-body);
     font-size: var(--text-lg);

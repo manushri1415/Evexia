@@ -1,0 +1,80 @@
+{# Evexia Logo Component - Reusable SVG logo with Cormorant Garamond typography #}
+
+{# Full Logo - For landing page header (centered, ~200px width) #}
+{% macro full(class="") %}
+<svg class="logo logo--full {{ class }}" viewBox="0 0 300 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Evexia logo">
+    <defs>
+        <linearGradient id="logoGradientFull" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#10b981"/>
+            <stop offset="1" stop-color="#3b82f6"/>
+        </linearGradient>
+    </defs>
+    <!-- Icon -->
+    <g transform="translate(20 20)">
+        <path d="M40 40H12C5.373 40 0 34.627 0 28V12C0 5.373 5.373 0 12 0h16c6.627 0 12 5.373 12 12z" fill="url(#logoGradientFull)" fill-opacity=".9"/>
+        <path d="M40 40V12c0-6.627 5.373-12 12-12h16c6.627 0 12 5.373 12 12v16c0 6.627-5.373 12-12 12z" fill="url(#logoGradientFull)" fill-opacity=".8"/>
+        <path d="M40 40h28c6.627 0 12 5.373 12 12v16c0 6.627-5.373 12-12 12H52c-6.627 0-12-5.373-12-12z" fill="url(#logoGradientFull)" fill-opacity=".9"/>
+        <path d="M40 40v28c0 6.627-5.373 12-12 12H12C5.373 80 0 74.627 0 68V52c0-6.627 5.373-12 12-12z" fill="url(#logoGradientFull)" fill-opacity=".8"/>
+        <circle cx="40" cy="40" r="8" fill="#fff"/>
+    </g>
+    <!-- Text - Uses webapp serif font -->
+    <text x="115" y="78"
+          font-family="'Cormorant Garamond', Georgia, serif"
+          font-weight="600"
+          font-size="56"
+          letter-spacing="-1"
+          fill="currentColor">
+        evexia
+    </text>
+    <!-- Decorative dot -->
+    <circle cx="275" cy="78" r="5" fill="url(#logoGradientFull)"/>
+</svg>
+{% endmacro %}
+
+{# Compact Logo - For portal headers (icon + text, ~140px width) #}
+{% macro compact(class="", white=false) %}
+<svg class="logo logo--compact {% if white %}logo--white{% endif %} {{ class }}" viewBox="0 0 180 50" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Evexia logo">
+    <defs>
+        <linearGradient id="logoGradientCompact{% if white %}White{% endif %}" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#10b981"/>
+            <stop offset="1" stop-color="#3b82f6"/>
+        </linearGradient>
+    </defs>
+    <!-- Icon (scaled down) -->
+    <g transform="translate(5 5) scale(0.5)">
+        <path d="M40 40H12C5.373 40 0 34.627 0 28V12C0 5.373 5.373 0 12 0h16c6.627 0 12 5.373 12 12z" fill="url(#logoGradientCompact{% if white %}White{% endif %})" fill-opacity=".9"/>
+        <path d="M40 40V12c0-6.627 5.373-12 12-12h16c6.627 0 12 5.373 12 12v16c0 6.627-5.373 12-12 12z" fill="url(#logoGradientCompact{% if white %}White{% endif %})" fill-opacity=".8"/>
+        <path d="M40 40h28c6.627 0 12 5.373 12 12v16c0 6.627-5.373 12-12 12H52c-6.627 0-12-5.373-12-12z" fill="url(#logoGradientCompact{% if white %}White{% endif %})" fill-opacity=".9"/>
+        <path d="M40 40v28c0 6.627-5.373 12-12 12H12C5.373 80 0 74.627 0 68V52c0-6.627 5.373-12 12-12z" fill="url(#logoGradientCompact{% if white %}White{% endif %})" fill-opacity=".8"/>
+        <circle cx="40" cy="40" r="8" fill="{% if white %}var(--teal-800, #0d4f55){% else %}#fff{% endif %}"/>
+    </g>
+    <!-- Text -->
+    <text x="55" y="35"
+          font-family="'Cormorant Garamond', Georgia, serif"
+          font-weight="600"
+          font-size="30"
+          letter-spacing="-0.5"
+          fill="currentColor">
+        evexia
+    </text>
+    <!-- Decorative dot -->
+    <circle cx="168" cy="35" r="3" fill="url(#logoGradientCompact{% if white %}White{% endif %})"/>
+</svg>
+{% endmacro %}
+
+{# Icon Only - For favicon or very small spaces #}
+{% macro icon(class="", size=40) %}
+<svg class="logo logo--icon {{ class }}" viewBox="0 0 80 80" width="{{ size }}" height="{{ size }}" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Evexia icon">
+    <defs>
+        <linearGradient id="logoGradientIcon" x1="0" y1="0" x2="80" y2="80" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#10b981"/>
+            <stop offset="1" stop-color="#3b82f6"/>
+        </linearGradient>
+    </defs>
+    <path d="M40 40H12C5.373 40 0 34.627 0 28V12C0 5.373 5.373 0 12 0h16c6.627 0 12 5.373 12 12z" fill="url(#logoGradientIcon)" fill-opacity=".9"/>
+    <path d="M40 40V12c0-6.627 5.373-12 12-12h16c6.627 0 12 5.373 12 12v16c0 6.627-5.373 12-12 12z" fill="url(#logoGradientIcon)" fill-opacity=".8"/>
+    <path d="M40 40h28c6.627 0 12 5.373 12 12v16c0 6.627-5.373 12-12 12H52c-6.627 0-12-5.373-12-12z" fill="url(#logoGradientIcon)" fill-opacity=".9"/>
+    <path d="M40 40v28c0 6.627-5.373 12-12 12H12C5.373 80 0 74.627 0 68V52c0-6.627 5.373-12 12-12z" fill="url(#logoGradientIcon)" fill-opacity=".8"/>
+    <circle cx="40" cy="40" r="8" fill="#fff"/>
+</svg>
+{% endmacro %}

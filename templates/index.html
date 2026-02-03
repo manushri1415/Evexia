@@ -1,3 +1,4 @@
+{% from "components/logo.html" import full as logo_full %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Evexia</h1>
+            {{ logo_full() }}
             <p class="subtitle">Patient Medical Data Aggregator</p>
             <p class="tagline">Securely aggregate and share your medical records from Arizona hospitals</p>
         </header>
